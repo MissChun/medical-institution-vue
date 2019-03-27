@@ -23,23 +23,23 @@
   .children-menu {
     background-color: #fff;
   }
-  >li{
+  > li {
     width: 63px;
-    &:last-child{
-      margin-bottom:60px;
+    &:last-child {
+      margin-bottom: 60px;
     }
   }
   transition: width 0.1s;
-    -moz-transition: width 0.1s; /* Firefox 4 */
+  -moz-transition: width 0.1s; /* Firefox 4 */
   -webkit-transition: width 0.1s; /* Safari 和 Chrome */
   -o-transition: width 0.1s; /* Opera */
 }
-.max-side{
+.max-side {
   //width: 230px;
   .children-menu {
     background-color: #f2f5fd;
   }
-   li{
+  li {
     width: 229px;
   }
 }
@@ -47,8 +47,6 @@
   height: 42px;
   line-height: 42px;
 }
-
-
 
 .munu-logo {
   padding-left: 25px;
@@ -110,27 +108,27 @@
     -o-transform: rotate(45deg);
   }
 }
-.main-content{
-  min-width:850px;
+.main-content {
+  min-width: 850px;
 }
-.el-main{
+.el-main {
   overflow: hidden;
 }
-.max-side-width{
-  width:229px!important;
+.max-side-width {
+  width: 229px !important;
   transition: width 0.1s;
   -moz-transition: width 0.1s; /* Firefox 4 */
   -webkit-transition: width 0.1s; /* Safari 和 Chrome */
   -o-transition: width 0.1s; /* Opera */
 }
-.min-side-width{
-  width: 63px!important;
+.min-side-width {
+  width: 63px !important;
   transition: width 0.1s;
   -moz-transition: width 0.1s; /* Firefox 4 */
   -webkit-transition: width 0.1s; /* Safari 和 Chrome */
   -o-transition: width 0.1s; /* Opera */
 }
-.shrink-btn{
+.shrink-btn {
   height: 48px;
   background: #fff;
   border-top: 1px solid #e4e7ed;
@@ -140,13 +138,13 @@
   z-index: 90;
   line-height: 48px;
   text-align: center;
-  color: #7C8F9F;
+  color: #7c8f9f;
   font-size: 14px;
-  img{
-    margin-left:5px;
+  img {
+    margin-left: 5px;
   }
-  &.max-side-width{
-    img{
+  &.max-side-width {
+    img {
       transform: rotate(180deg);
       -webkit-transform: rotate(180deg);
       -moz-transform: rotate(180deg);
@@ -161,81 +159,118 @@
 <template>
   <div>
     <!-- <el-container> -->
-      <common-header :type="'loginAfter'" :is-collapse="isCollapse"></common-header>
-      <el-container>
-        <el-aside :class="isCollapse?'min-side-width':'max-side-width'">
-          <el-menu class="g-side" :class="isCollapse?'':'max-side'" router :collapse="isCollapse">
-            <el-row style="margin-top:30px;">
-              <el-col v-if="!isCollapse">
-                <div class="munu-logo">MENU</div>
-              </el-col>
-            </el-row>
-            <template v-for="(route, index) in menus">
-              <template v-if="route.children && dealChildren(route.children).length">
-                <el-submenu :key="index" :index="route.name" class="menu-title">
-                  <template slot="title">
-                    <div class="menu-title-cloumn" :class="[{ 'choosed-cloumn' : (breadcrumbs[1] && breadcrumbs[1].name === route.name) }]">
-                      <i :class="[{ 'color-4a9bf8' : (breadcrumbs[1] && breadcrumbs[1].name === route.name) }, route.meta.iconName]"></i>
-                      <span :class="{ 'color-4a9bf8' : (breadcrumbs[1] && breadcrumbs[1].name === route.name) }">{{route.meta.title||"无名字"}}</span>
-                    </div>
-                  </template>
-                  <el-menu-item v-for="(cRoute, cIndex) in dealChildren(route.children)" :key="cIndex" :index="cRoute.path" :route="cRoute" class="children-menu">
-                    <div class="child-menu-title"><i class="chooed-diamond" v-if="breadcrumbs[2] && breadcrumbs[2].name === cRoute.name"></i><span :class="{ 'color-303133' : (breadcrumbs[2] && breadcrumbs[2].name === cRoute.name)  }">{{cRoute.meta.title||"无名字"}}</span></div>
-                  </el-menu-item>
-                </el-submenu>
-              </template>
-              <template v-else>
-                <el-menu-item :route="route" :index="route.name" class="menu-title dashborad-menu">
-                  <template slot="title">
-                    <div class="menu-title-cloumn" :class="{ 'choosed-cloumn' : activeMenu.name === route.name }">
-                      <i :class="[{ 'color-4a9bf8' : activeMenu.name === route.name }, route.meta.iconName]"></i>
-                      <span :class="{ 'color-4a9bf8' : activeMenu.name === route.name }">{{route.meta.title||"无名字"}}</span>
-                    </div>
-                  </template>
+    <common-header :type="'loginAfter'" :is-collapse="isCollapse"></common-header>
+    <el-container>
+      <el-aside :class="isCollapse?'min-side-width':'max-side-width'">
+        <el-menu class="g-side" :class="isCollapse?'':'max-side'" router :collapse="isCollapse">
+          <el-row style="margin-top:30px;">
+            <el-col v-if="!isCollapse">
+              <div class="munu-logo">MENU</div>
+            </el-col>
+          </el-row>
+          <template v-for="(route, index) in menus">
+            <template v-if="route.children && dealChildren(route.children).length">
+              <el-submenu :key="index" :index="route.name" class="menu-title">
+                <template slot="title">
+                  <div
+                    class="menu-title-cloumn"
+                    :class="[{ 'choosed-cloumn' : (breadcrumbs[1] && breadcrumbs[1].name === route.name) }]"
+                  >
+                    <i
+                      :class="[{ 'color-4a9bf8' : (breadcrumbs[1] && breadcrumbs[1].name === route.name) }, route.meta.iconName]"
+                    ></i>
+                    <span
+                      :class="{ 'color-4a9bf8' : (breadcrumbs[1] && breadcrumbs[1].name === route.name) }"
+                    >{{route.meta.title||"无名字"}}</span>
+                  </div>
+                </template>
+                <el-menu-item
+                  v-for="(cRoute, cIndex) in dealChildren(route.children)"
+                  :key="cIndex"
+                  :index="cRoute.path"
+                  :route="cRoute"
+                  class="children-menu"
+                >
+                  <div class="child-menu-title">
+                    <i
+                      class="chooed-diamond"
+                      v-if="breadcrumbs[2] && breadcrumbs[2].name === cRoute.name"
+                    ></i>
+                    <span
+                      :class="{ 'color-303133' : (breadcrumbs[2] && breadcrumbs[2].name === cRoute.name)  }"
+                    >{{cRoute.meta.title||"无名字"}}</span>
+                  </div>
                 </el-menu-item>
-              </template>
+              </el-submenu>
             </template>
-          </el-menu>
-          <div class="shrink-btn cursor-pointer" @click="isShrink" :class="isCollapse?'min-side-width':'max-side-width'">
-            <div v-if="isCollapse">
-              展开<img src="../assets/img/open.svg">
-            </div>
-            <div v-else>
-              收起<img src="../assets/img/open.svg">
-            </div>
-          </div>
-        </el-aside>
-        <el-main>
-          <template>
-            <div styles="margin-top: 63px;" class="main-content">
-              <router-view></router-view>
-            </div>
+            <template v-else>
+              <el-menu-item
+                :route="route"
+                :index="route.name"
+                class="menu-title dashborad-menu"
+                :key="index"
+              >
+                <template slot="title">
+                  <div
+                    class="menu-title-cloumn"
+                    :class="{ 'choosed-cloumn' : activeMenu.name === route.name }"
+                  >
+                    <i
+                      :class="[{ 'color-4a9bf8' : activeMenu.name === route.name }, route.meta.iconName]"
+                    ></i>
+                    <span
+                      :class="{ 'color-4a9bf8' : activeMenu.name === route.name }"
+                    >{{route.meta.title||"无名字"}}</span>
+                  </div>
+                </template>
+              </el-menu-item>
+            </template>
           </template>
-        </el-main>
-      </el-container>
+        </el-menu>
+        <div
+          class="shrink-btn cursor-pointer"
+          @click="isShrink"
+          :class="isCollapse?'min-side-width':'max-side-width'"
+        >
+          <div v-if="isCollapse">
+            展开
+            <img src="../assets/img/open.svg">
+          </div>
+          <div v-else>
+            收起
+            <img src="../assets/img/open.svg">
+          </div>
+        </div>
+      </el-aside>
+      <el-main>
+        <template>
+          <div styles="margin-top: 63px;" class="main-content">
+            <router-view></router-view>
+          </div>
+        </template>
+      </el-main>
+    </el-container>
     <!-- </el-container> -->
   </div>
-
 </template>
 <script>
 import commonHeader from '@/components/common/commonHeader'
-import Lodash from 'lodash'
 export default {
   data() {
     return {
-      user: { name: "aa" },
+      user: { name: 'aa' },
       menus: [],
-      isCollapse:false,
-      pcW:document.body.offsetWidth,
-      minPcW:1400
-    };
+      isCollapse: false,
+      pcW: document.body.offsetWidth,
+      minPcW: 1400
+    }
   },
   components: {
     commonHeader: commonHeader
   },
   computed: {
     activeMenu: function() {
-      return this.$route;
+      return this.$route
     },
     breadcrumbs: function() {
       return (this.$route && this.$route.matched) || []
@@ -245,27 +280,27 @@ export default {
     // const v=this
 
     dealChildren: function(children) {
-      let childrenMenu = [];
+      let childrenMenu = []
       for (let i in children) {
         if (children[i].meta && !children[i].meta.notRenderMenu) {
           childrenMenu.push(children[i])
         }
       }
-      return childrenMenu;
+      return childrenMenu
     },
     isChoosed: function(menu) {
-      return false;
+      return false
     },
-    isCollapseW(){
-      let pcW = document.body.offsetWidth;
-      console.log('宽度',pcW);
+    isCollapseW() {
+      let pcW = document.body.offsetWidth
+      console.log('宽度', pcW)
     },
-    isShrink(){
-      this.isCollapse = !this.isCollapse;
-      this.pbFunc.setLocalData('isCollapse',this.isCollapse,true);
+    isShrink() {
+      this.isCollapse = !this.isCollapse
+      this.pbFunc.setLocalData('isCollapse', this.isCollapse, true)
     }
   },
-  mounted:function(){
+  mounted: function() {
     // const that = this
     // window.onresize = _.debounce(() => {
     //     // console.log("onresize:" + that.pcW)
@@ -274,14 +309,12 @@ export default {
     //   }, 400)
   },
   created: function() {
-    let menus = this.$store.state.common.menuData;
-    this.isCollapse = this.pbFunc.getLocalData('isCollapse', true);
+    let menus = this.$store.state.common.menuData
+    this.isCollapse = this.pbFunc.getLocalData('isCollapse', true)
     // this.isCollapse = this.pcW<this.minPcW?true:false;
     if (menus) {
-
-      this.menus = menus;
+      this.menus = menus
     }
   }
-};
-
+}
 </script>

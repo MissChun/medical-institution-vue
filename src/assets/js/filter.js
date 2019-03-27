@@ -1,22 +1,23 @@
-let dealNullData = data =>{
-  if(data == null || data == undefined || data == ''){
+let dealNullData = data => {
+  // eslint-disable-next-line
+  if (data == null || data == undefined || data == '') {
     return '无'
-  }else{
+  } else {
     return data
   }
 }
-let dateFilter = (value) => {
-  let dates = [];
+let dateFilter = value => {
+  let dates = []
   if (value) {
-    dates = value.split(' ');
+    dates = value.split(' ')
   }
-  return dates.length ? dates[0] : value;
-};
-let hourFilter = (value) => {
-  let dates = [];
+  return dates.length ? dates[0] : value
+}
+let hourFilter = value => {
+  let dates = []
   if (value) {
-    dates = value.split(':');
+    dates = value.split(':')
   }
-  return dates.length ? dates[0] : value;
-};
-export { dealNullData,dateFilter,hourFilter }
+  return dates.length ? dates[0] : value
+}
+export { dealNullData, dateFilter, hourFilter }

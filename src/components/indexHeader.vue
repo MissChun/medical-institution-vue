@@ -1,7 +1,7 @@
 <style scoped lang="less">
 .el-header {
-  background: #232F36;
-  height: 64px!important;
+  background: #232f36;
+  height: 64px !important;
   .bpm-head {
     width: 1200px;
     margin: 0 auto;
@@ -48,13 +48,14 @@
     }
   }
 }
-
 </style>
 <template>
   <el-header>
     <div class="bpm-head">
       <el-row>
-        <el-col :span="6"><img src="@/assets/img/logo.svg" alt=""></el-col>
+        <el-col :span="6">
+          <img src="@/assets/img/logo.svg" alt>
+        </el-col>
         <el-col :span="18" class="text-right">
           <a rel="nofollow" target="_blank" :href="appUrl.driverAppUrl">司机端App下载</a>
           <span>｜</span>
@@ -62,7 +63,8 @@
           <span>｜</span>
           <a rel="nofollow" target="_blank" :href="appUrl.consumerAppUrl">客户端App下载</a>
           <div v-if="users&&users.nick_name" class="user">
-            欢迎您：{{users.nick_name}}，<a class="cursor-pointer text-blue" v-on:click="loginLink">进入91LNG</a>
+            欢迎您：{{users.nick_name}}，
+            <a class="cursor-pointer text-blue" v-on:click="loginLink">进入91LNG</a>
             <span>|</span>
             <a v-on:click="logout" class="cursor-pointer">退出</a>
           </div>
@@ -86,18 +88,9 @@ export default {
   },
 
   data: function() {
-
-    return {
-
-    }
+    return {}
   },
-  computed: {
-
-
-  },
-  methods: {
-
-  }
+  computed: {},
+  methods: {}
 }
-
 </script>

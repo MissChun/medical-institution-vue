@@ -1,4 +1,3 @@
-
 /* 浏览器相关 */
 /**
  * @function isMobile
@@ -8,7 +7,7 @@
  * @returns {boolean} [是否是移动终端]
  */
 export const isMobile = function() {
-  return navigator.userAgent.toString().match(/mobile/i) ? true : false;
+  return !!navigator.userAgent.toString().match(/mobile/i)
 }
 
 /**
@@ -25,23 +24,26 @@ export const setCookie = function(key, value, day) {
    * cookie保存秒数
    * @type {number}
    */
-  var ckTime = (day !== undefined && typeof day === 'number') ? parseInt(day) * 86400000 : 86400000;
+  var ckTime =
+    day !== undefined && typeof day === 'number'
+      ? parseInt(day) * 86400000
+      : 86400000
   /**
    * 过期时间对象
    * @type {object}
    */
-  var expires = new Date();
+  var expires = new Date()
   /**
    * 更多设置内容
    * @type {string}
    */
-  var more = '';
-  if (document.location.href.toString().match(/^https:/i))
-    more += 'secure;';
-  expires.setTime(expires.getTime() + ckTime);
-  //secure   : 表示cookie只能被发送到http服务器。
-  //httponly : 表示cookie不能被客户端脚本获取到。(后弹才能用)
-  document.cookie = key + '=' + value + ';expires=' + expires.toUTCString() + ';path=/;' + more;
+  var more = ''
+  if (document.location.href.toString().match(/^https:/i)) more += 'secure;'
+  expires.setTime(expires.getTime() + ckTime)
+  // secure   : 表示cookie只能被发送到http服务器。
+  // httponly : 表示cookie不能被客户端脚本获取到。(后弹才能用)
+  document.cookie =
+    key + '=' + value + ';expires=' + expires.toUTCString() + ';path=/;' + more
 }
 /**
  * @function delCookie
@@ -55,9 +57,9 @@ export const delCookie = function(key) {
    * 过期时间对象
    * @type {object}
    */
-  var expires = new Date();
-  expires.setTime(expires.getTime() - 86400);
-  document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=/;';
+  var expires = new Date()
+  expires.setTime(expires.getTime() - 86400)
+  document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=/;'
 }
 /**
  * @function getCookie
@@ -72,9 +74,6 @@ export const getCookie = function(key) {
    * cookie值
    * @type {object}
    */
-  var keyValue = document.cookie.match('(^|;) ?' + key + '=([^; ]*)(;|$)');
-  return keyValue ? keyValue[2] : null;
+  var keyValue = document.cookie.match('(^|;) ?' + key + '=([^; ]*)(;|$)')
+  return keyValue ? keyValue[2] : null
 }
-
-
-

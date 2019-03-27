@@ -19,7 +19,9 @@
         <div class="img-review-in-box">
           <ul>
             <li v-for="(item , key) in imgList" :key="key">
-              <div v-show="previewIndex == key"><img :src="item.src" v-bind:style="imgStyle" /></div>
+              <div v-show="previewIndex == key">
+                <img :src="item.src" v-bind:style="imgStyle">
+              </div>
             </li>
           </ul>
         </div>
@@ -40,13 +42,15 @@ export default {
   name: 'imgReview',
   computed: {
     imgStyle: function() {
-      let imgStyle = '';
-      imgStyle = `transform:rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
+      let imgStyle = ''
+      imgStyle = `transform:rotate(${this.rotateDeg}deg)  scale(${
+        this.zoomNum
+      });
         -ms-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
         -moz-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
         -webkit-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
         -o-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});`
-      return imgStyle;
+      return imgStyle
     }
   },
   data() {
@@ -54,86 +58,86 @@ export default {
       previewIndex: 0,
       imgList: [],
       zoomNum: 1.8,
-      rotateDeg: 0,
+      rotateDeg: 0
     }
   },
   methods: {
     nextImg() {
-      if (this.previewIndex < (this.imgList.length - 1)) {
+      if (this.previewIndex < this.imgList.length - 1) {
         this.previewIndex++
       } else {
-        this.previewIndex = 0;
+        this.previewIndex = 0
       }
     },
     previousImg() {
       if (this.previewIndex === 0) {
-        this.previewIndex = (this.imgList.length - 1);
+        this.previewIndex = this.imgList.length - 1
       } else {
-        this.previewIndex--;
+        this.previewIndex--
       }
     },
     rotateImg() {
-      this.rotateDeg += 90;
+      this.rotateDeg += 90
     },
     zoomBig() {
       if (this.zoomNum < 1.8) {
-        this.zoomNum += 0.2;
+        this.zoomNum += 0.2
       }
-
     },
     zoomSmall() {
       if (this.zoomNum > 0.4) {
-        this.zoomNum -= 0.2;
+        this.zoomNum -= 0.2
       }
-
     },
     closePreview() {
-      this.zoomNum = 1.8;
-      this.rotateDeg = 0;
-      this.imgObject.showPreview = false;
+      this.zoomNum = 1.8
+      this.rotateDeg = 0
+      this.imgObject.showPreview = false
     },
     dealImg() {
       let imgListArray = []
-      if (this.imgObject && this.imgObject.imgList && this.imgObject.imgList.length) {
+      if (
+        this.imgObject &&
+        this.imgObject.imgList &&
+        this.imgObject.imgList.length
+      ) {
         for (let i in this.imgObject.imgList) {
-          imgListArray[i] = {};
+          imgListArray[i] = {}
           if (this.imgObject.imgList[i].src) {
-            imgListArray[i] = {};
-            imgListArray[i].src = this.imgObject.imgList[i].src;
+            imgListArray[i] = {}
+            imgListArray[i].src = this.imgObject.imgList[i].src
           }
         }
       }
-      return imgListArray;
+      return imgListArray
     }
   },
   created() {
-    this.imgList = this.dealImg();
-
+    this.imgList = this.dealImg()
   },
   props: {
-    imgObject: Object,
+    imgObject: Object
   },
   watch: {
-    'imgObject': {
+    imgObject: {
       handler: function(val, oldVal) {
         let imgListArray = []
         if (val.imgList.length) {
           for (let i in val.imgList) {
-            imgListArray[i] = {};
+            imgListArray[i] = {}
             if (val.imgList[i]) {
-              imgListArray[i] = {};
-              imgListArray[i].src = val.imgList[i];
+              imgListArray[i] = {}
+              imgListArray[i].src = val.imgList[i]
             }
           }
         }
-        this.imgList = imgListArray;
-        this.previewIndex = val.previewIndex || 0;
+        this.imgList = imgListArray
+        this.previewIndex = val.previewIndex || 0
       },
-      deep: true,
+      deep: true
     }
   }
 }
-
 </script>
 <style scoped lang="less">
 .review-background {
@@ -145,7 +149,7 @@ export default {
   overflow: auto;
   margin: 0;
   z-index: 2001;
-  background-color: rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, 0.6);
   color: #fff;
 }
 
@@ -206,5 +210,4 @@ export default {
     }
   }
 }
-
 </style>

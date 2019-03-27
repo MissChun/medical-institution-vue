@@ -1,6 +1,5 @@
 <style type="text/css" scoped lang="less">
 @import '../../assets/css/error.less';
-
 </style>
 <template>
   <div class="error">
@@ -16,10 +15,9 @@
         </div>
       </div>
       <div class="error-right">
-        <img src="@/assets/img/error.png" alt="">
+        <img src="@/assets/img/error.png" alt>
       </div>
     </div>
-  </div>
   </div>
 </template>
 <script type="text/javascript">
@@ -27,22 +25,16 @@
 import commonHeader from '@/components/common/commonHeader'
 export default {
   components: {
-    commonHeader: commonHeader,
+    commonHeader: commonHeader
   },
   data: function() {
-
-    return {
-
-    }
+    return {}
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     go: function() {
-      this.$emit('agree');
+      this.$emit('agree')
     }
   }
 }
-
 </script>

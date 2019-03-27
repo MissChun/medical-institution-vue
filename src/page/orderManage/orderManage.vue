@@ -7,15 +7,9 @@
 export default {
   name: 'orderManage',
   data() {
-    return {
-
-    }
+    return {}
   }
 }
-
 </script>
 <style>
-
-
 </style>
-

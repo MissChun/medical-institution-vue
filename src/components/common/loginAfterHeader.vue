@@ -3,7 +3,7 @@
   left: 0;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
- // width: 60%;
+  // width: 60%;
   height: 59px;
   //padding-left: 50px;
   background: #fff;
@@ -16,7 +16,6 @@
   height: 59px;
   background: white;
 }
-
 
 .g-head {
   position: fixed;
@@ -38,12 +37,12 @@
   line-height: 59px;
   border: 1px solid rgb(222, 222, 222);
   border-top: none;
-  border-left:0;
+  border-left: 0;
 }
-.max-logo{
+.max-logo {
   width: 229px;
 }
-.min-logo{
+.min-logo {
   width: 63px;
 }
 .nav {
@@ -94,16 +93,14 @@
 }
 
 .log-img {
-  line-height: 55px;
-  vertical-align: middle;
-  margin-top: -2px;
+  // line-height: 55px;
+  // vertical-align: middle;
+  // margin-top: -2px;
 }
 
 .color-4a9bf8 {
   color: #4a9bf8;
 }
-
-
 
 /deep/ .el-breadcrumb__item {
   &:last-child {
@@ -145,10 +142,10 @@
         word-break: break-all;
         word-warp: break-word;
         .time {
-          color: #B8B8B8;
+          color: #b8b8b8;
         }
         &:hover {
-          background: #F4F6F9;
+          background: #f4f6f9;
         }
         &.is-unread {
           &:before {
@@ -171,22 +168,22 @@
     width: 382px;
     border-top: 1px solid #b9b9b9;
     line-height: 50px;
-    color: #9E9E9E;
+    color: #9e9e9e;
     padding: 0 22px;
     position: absolute;
     bottom: 0;
     font-weight: 600;
   }
 }
-.users{
-  display:inline-block;
-  max-width:70px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+.users {
+  display: inline-block;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   line-height: 15px;
-  position:relative;
-  top:3px;
+  position: relative;
+  top: 3px;
 }
 </style>
 <template>
@@ -194,19 +191,27 @@
   <el-header>
     <el-row type="flex" class="g-head">
       <router-link :to="{path: '/'}">
-        <div href="" title="运输管理系统" class="logo" :class="isCollapse?'min-logo':'max-logo'">
-          <img class="log-img" v-if="isCollapse" src="../../assets/img/91LNG_min.svg">
-          <img class="log-img" v-else src="../../assets/img/91LNG.svg">
+        <div href title="运输管理系统" class="logo" :class="isCollapse?'min-logo':'max-logo'">
+          <div v-if="isCollapse">
+            <img class="log-img" src="../../assets/img/91LNG_min.svg">
+          </div>
+          <img class="log-img" v-else src="../../assets/img/logo.svg">
         </div>
       </router-link>
       <div class="nav">
         <el-row>
           <el-col :span="16">
             <div class="g-statues-bar p-lr">
-              <el-breadcrumb separator="/" class="bread" id="mybread" separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item v-for="(item,index) in breadcrumbs" :key="index">
-                  {{ item.meta.title || "" }}
-                </el-breadcrumb-item>
+              <el-breadcrumb
+                separator="/"
+                class="bread"
+                id="mybread"
+                separator-class="el-icon-arrow-right"
+              >
+                <el-breadcrumb-item
+                  v-for="(item,index) in breadcrumbs"
+                  :key="index"
+                >{{ item.meta.title || "" }}</el-breadcrumb-item>
               </el-breadcrumb>
             </div>
           </el-col>
@@ -218,7 +223,17 @@
                     <div class="notice-temp-title">系统通知</div>
                     <div class="notice-temp-content" v-loading="noticeLoading">
                       <ul>
-                        <li class="cursor-pointer" v-for="(item,index) in noticeList" :class="item.read?'':'is-unread'" :key="item.id" v-on:click="signRead(true,item,item.read)"><!-- <span v-if="item.message_type.key">【{{item.message_type.verbose}}】</span> -->{{item.content}}<span class="time">{{item.created_at}}</span></li>
+                        <li
+                          class="cursor-pointer"
+                          v-for="(item) in noticeList"
+                          :class="item.read?'':'is-unread'"
+                          :key="item.id"
+                          v-on:click="signRead(true,item,item.read)"
+                        >
+                          <!-- <span v-if="item.message_type.key">【{{item.message_type.verbose}}】</span> -->
+                          {{item.content}}
+                          <span class="time">{{item.created_at}}</span>
+                        </li>
                       </ul>
                     </div>
                     <div class="notice-temp-footer">
@@ -234,7 +249,10 @@
                   </div>
                 </div>
                 <span slot="reference" v-on:click="isShowNotice">
-                  <el-badge :value="$store.state.common.unreadNewNum?($store.state.common.unreadNewNum<9?$store.state.common.unreadNewNum:'N'):''" class="item">
+                  <el-badge
+                    :value="$store.state.common.unreadNewNum?($store.state.common.unreadNewNum<9?$store.state.common.unreadNewNum:'N'):''"
+                    class="item"
+                  >
                     <i class="icon-notice cursor-pointer"></i>
                   </el-badge>
                 </span>
@@ -242,7 +260,11 @@
               <span class="ml-25 mr-25 text-stance fs-18">|</span>
               <i class="icon-user"></i>
               <el-dropdown trigger="click" @command="logout">
-                <span class="el-dropdown-link">Hi，<span class="users" :title="users.nick_name">{{users.nick_name}}</span><i class="el-icon-arrow-down el-icon--right"></i></span>
+                <span class="el-dropdown-link">
+                  Hi，
+                  <span class="users" :title="users.nick_name">{{users.nick_name}}</span>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>退出</el-dropdown-item>
                 </el-dropdown-menu>
@@ -251,15 +273,13 @@
             </div>
           </el-col>
         </el-row>
-
-
       </div>
     </el-row>
   </el-header>
   <!-- </div> -->
 </template>
 <script>
-import { getDomainUrl } from '@/api/index';
+import { getDomainUrl } from '@/api/index'
 export default {
   name: 'loginAfterheader',
   props: {
@@ -286,7 +306,6 @@ export default {
     breadcrumbs: function() {
       return (this.$route && this.$route.matched) || []
     }
-
   },
   created() {
     // this.wsLink();
@@ -294,90 +313,110 @@ export default {
   },
   methods: {
     wsLink() {
-      let vm = this;
-      let currentUrl = document.location.href.toString();
-      let domainUrl = getDomainUrl();
-      //,['c55f02c5-81e2-433c-84a0-e974d0642bab'],{'Authorization':''}
-      this.$store.state.common.wsMsg = new WebSocket('ws://' + domainUrl + '/ws/web/notifications/' + this.users.id + '/');
-      let ws = this.$store.state.common.wsMsg;
+      let vm = this
+      // let currentUrl = document.location.href.toString()
+      let domainUrl = getDomainUrl()
+      //, ['c55f02c5-81e2-433c-84a0-e974d0642bab'],{'Authorization':''}
+      this.$store.state.common.wsMsg = new WebSocket(
+        'ws://' + domainUrl + '/ws/web/notifications/' + this.users.id + '/'
+      )
+      let ws = this.$store.state.common.wsMsg
       ws.onopen = function(event) {
         console.log('链接消息', event)
       }
-      ws.onmessage = (event) => {
-        console.log('接收的消息', event.data);
-        let msg = JSON.parse(event.data);
+      ws.onmessage = event => {
+        console.log('接收的消息', event.data)
+        let msg = JSON.parse(event.data)
         vm.$store.commit('ChangeMsgNum', {
           num: 1
-        });
+        })
         vm.$notify({
           // title: msg.message_type.verbose,
           message: msg.content,
-          position: 'bottom-right',
-        });
+          position: 'bottom-right'
+        })
       }
       ws.onerror = function(event) {
         setTimeout(() => {
-          this.wsNumError--;
+          this.wsNumError--
           if (this.wsNumError > 0) {
-            vm.wsLink();
+            vm.wsLink()
           }
         }, 60000)
       }
-      ws.onclose = (event) => {
+      ws.onclose = event => {
         setTimeout(() => {
-          this.wsNumClose--;
+          this.wsNumClose--
           if (this.wsNumClose > 0) {
-            vm.wsLink();
+            vm.wsLink()
           }
         }, 60000)
       }
-
     },
     // 未读消息
     getUnreadNewNum() {
-      this.$$http('getUnreadNewNum', {}).then((results) => {
-        if (results.data && results.data.code == 0) {
-          this.$store.state.common.unreadNewNum = results.data.data.count;
+      this.$$http('getUnreadNewNum', {}).then(results => {
+        if (results.data && results.data.code === 0) {
+          this.$store.state.common.unreadNewNum = results.data.data.count
           // this.unreadNewNum = results.data.data.count;
         }
-      }).catch((err) => {})
+      })
     },
     // 展示消息浮窗
     isShowNotice() {
-      this.showNotice = true;
-      this.noticeLoading = true;
+      this.showNotice = true
+      this.noticeLoading = true
       let postData = {
         page: 1,
-        page_size: 5,
+        page_size: 5
       }
       if (this.$store.state.common.unreadNewNum) {
-        postData.unread_only = true;
+        postData.unread_only = true
       }
-      this.getUnreadNewNum();
-      this.$$http('getMessagesList', postData).then((results) => {
-        this.noticeLoading = false;
-        if (results.data && results.data.code == 0) {
-          this.noticeList = results.data.data.results;
-        }
-      }).catch((err) => {
-        this.noticeLoading = false;
-      })
+      this.getUnreadNewNum()
+      this.$$http('getMessagesList', postData)
+        .then(results => {
+          this.noticeLoading = false
+          if (results.data && results.data.code === 0) {
+            this.noticeList = results.data.data.results
+          }
+        })
+        // eslint-disable-next-line
+        .catch(err => {
+          this.noticeLoading = false
+        })
     },
     isShowLink(row) {
       if (row.delivery_id || row.waybill_id) {
-        return true;
+        return true
       } else {
-        return false;
+        return false
       }
     },
     // 详情跳转
     urlLink(row) {
       if (row.extra && row.extra.action === 'ADD_TRUCKS' && row.delivery_id) {
-        this.$router.push({ path: '/orders/pickupOrders/orderDetail/arrangeCarTab/arrangeCarList/' + row.delivery_id + '/add' });
+        this.$router.push({
+          path:
+            '/orders/pickupOrders/orderDetail/arrangeCarTab/arrangeCarList/' +
+            row.delivery_id +
+            '/add'
+        })
       } else if (row.delivery_id) {
-        this.$router.push({ path: '/orders/pickupOrders/orderDetail/orderDetailTab/' + row.delivery_id + '/add' });
+        this.$router.push({
+          path:
+            '/orders/pickupOrders/orderDetail/orderDetailTab/' +
+            row.delivery_id +
+            '/add'
+        })
       } else if (row.waybill_id) {
-        this.$router.push({ path: '/logisticsManage/consignmentOrders/orderDetail/orderDetailTab/' + row.waybill_id + '/' + row.section_trip_id });
+        this.$router.push({
+          path:
+            '/logisticsManage/consignmentOrders/orderDetail/orderDetailTab/' +
+            row.waybill_id +
+            '/' +
+            row.section_trip_id
+        })
       }
     },
     signRead(isShow, row, isRead) {
@@ -386,40 +425,39 @@ export default {
           ids: []
         }
         if (row) {
-          postData.ids.push(row.id);
+          postData.ids.push(row.id)
         } else {
           for (let i in this.noticeList) {
             if (!this.noticeList[i].read) {
-              postData.ids.push(this.noticeList[i].id);
+              postData.ids.push(this.noticeList[i].id)
             }
           }
         }
         if (postData.ids.length && !isRead) {
-          this.$$http('batchReadMessages', postData).then((results) => {
-            if (results.data && results.data.code == 0) {
+          this.$$http('batchReadMessages', postData).then(results => {
+            if (results.data && results.data.code === 0) {
               if (row) {
                 if (this.$store.state.common.unreadNewNum) {
-                  this.$store.state.common.unreadNewNum--;
+                  this.$store.state.common.unreadNewNum--
                 }
                 if (this.isShowLink(row)) {
-                  this.urlLink(row);
+                  this.urlLink(row)
                 }
               } else {
-                this.getUnreadNewNum();
+                this.getUnreadNewNum()
               }
             }
-          }).catch((err) => {})
+          })
         } else if (postData.ids.length && isRead) {
           if (this.isShowLink(row)) {
-            this.urlLink(row);
+            this.urlLink(row)
           }
         }
       } else {
-        this.$router.push({ path: '/news/systemNotice/systemNoticeList' });
+        this.$router.push({ path: '/news/systemNotice/systemNoticeList' })
       }
-      this.showNotice = false;
-    },
+      this.showNotice = false
+    }
   }
 }
-
 </script>

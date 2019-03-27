@@ -5,7 +5,9 @@
         <div class="img-review-in-box">
           <ul>
             <li v-for="(item , key) in imgList" :key="key">
-              <div v-show="previewIndex == key"><img :src="item" v-bind:style="imgStyle" /></div>
+              <div v-show="previewIndex == key">
+                <img :src="item" v-bind:style="imgStyle">
+              </div>
             </li>
           </ul>
         </div>
@@ -25,13 +27,15 @@ export default {
   name: 'imgReview',
   computed: {
     imgStyle: function() {
-      let imgStyle = '';
-      imgStyle = `transform:rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
+      let imgStyle = ''
+      imgStyle = `transform:rotate(${this.rotateDeg}deg)  scale(${
+        this.zoomNum
+      });
         -ms-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
         -moz-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
         -webkit-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});
         -o-transform: rotate(${this.rotateDeg}deg)  scale(${this.zoomNum});`
-      return imgStyle;
+      return imgStyle
     }
   },
   data() {
@@ -39,44 +43,42 @@ export default {
       imgList: [],
       previewIndex: 0,
       rotateDeg: 0,
-      zoomNum: 1.8,
+      zoomNum: 1.8
     }
   },
   methods: {
     nextImg() {
-      if (this.previewIndex < (this.imgList.length - 1)) {
+      if (this.previewIndex < this.imgList.length - 1) {
         this.previewIndex++
       } else {
-        this.previewIndex = 0;
+        this.previewIndex = 0
       }
     },
     previousImg() {
       if (this.previewIndex === 0) {
-        this.previewIndex = (this.imgList.length - 1);
+        this.previewIndex = this.imgList.length - 1
       } else {
-        this.previewIndex--;
+        this.previewIndex--
       }
     },
     rotateImg() {
-      this.rotateDeg += 90;
+      this.rotateDeg += 90
     },
     zoomBig() {
       if (this.zoomNum < 1.8) {
-        this.zoomNum += 0.2;
+        this.zoomNum += 0.2
       }
-
     },
     zoomSmall() {
       if (this.zoomNum > 0.4) {
-        this.zoomNum -= 0.2;
+        this.zoomNum -= 0.2
       }
-    },
+    }
   },
   created() {
-    this.imgList = this.$route.query.imgList.split(',');
-  },
+    this.imgList = this.$route.query.imgList.split(',')
+  }
 }
-
 </script>
 <style scoped lang="less">
 .review-background {
@@ -132,15 +134,12 @@ export default {
     left: 50%;
     margin-left: -155px;
 
-
     height: 24px;
     width: 310px;
 
     font-size: 16px;
     color: #fff;
     text-align: center;
-    ;
-
     a {
       margin-left: 10px;
       line-height: 24px;
@@ -151,5 +150,4 @@ export default {
     }
   }
 }
-
 </style>

@@ -14,30 +14,27 @@ export default {
   data() {
     return {
       noDataInitObj: {
-        imgUrl: require("../../assets/img/tms_no_data.png"),
+        imgUrl: require('../../assets/img/tms_no_data.png'),
         styles: {
           position: 'absolute',
           top: '44px',
           height: '440px',
-          backgroundColor: "white",
+          backgroundColor: 'white',
           width: '100%',
           textAlign: 'center',
-          zIndex: 9,
+          zIndex: 9
         }
       }
     }
   },
   props: ['noDataObj'],
-  methods: {
-
-  },
+  methods: {},
   beforeMount: function() {
     if (this.noDataObj) {
-      Object.assign(this.noDataInitObj, this.noDataObj);
+      Object.assign(this.noDataInitObj, this.noDataObj)
     }
   }
 }
-
 </script>
 <style scoped lang="less">
 .noData {
@@ -60,5 +57,4 @@ export default {
   color: rgba(164, 174, 186, 1);
   line-height: 22px;
 }
-
 </style>

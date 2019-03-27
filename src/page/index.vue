@@ -7,17 +7,15 @@
 div,
 span,
 a {
-  font-family: PingFangSC-Light!important;
+  font-family: PingFangSC-Light !important;
 }
-
-
 
 .el-main {
   padding: 0;
   .banner {
     width: 100%;
     height: 705px;
-    background: url('../assets/img/banner.png')no-repeat 50%;
+    background: url('../assets/img/banner.png') no-repeat 50%;
     .banner-content {
       width: 1200px;
       margin: 0 auto;
@@ -34,7 +32,7 @@ a {
           line-height: 64px;
           width: 562px;
           height: 64px;
-          background: url('../assets/img/Rectangle.png')no-repeat;
+          background: url('../assets/img/Rectangle.png') no-repeat;
           text-align: center;
           margin: 0 auto;
         }
@@ -58,7 +56,7 @@ a {
       width: 100%;
       .advantage-list-msg {
         height: 309px;
-        background: #F7F8FA;
+        background: #f7f8fa;
         text-align: center;
         padding: 0 40px;
         img {
@@ -72,7 +70,7 @@ a {
         }
         div {
           font-size: 16px;
-          color: #50565C;
+          color: #50565c;
           line-height: 22px;
           text-align: center;
         }
@@ -87,7 +85,7 @@ a {
   .product {
     width: 100%;
     height: 670px;
-    background: url('../assets/img/product.png')no-repeat 50%;
+    background: url('../assets/img/product.png') no-repeat 50%;
     display: inline-block;
     .list-title {
       color: #fff;
@@ -128,36 +126,36 @@ a {
         color: #fff;
         height: 220px;
         &:after {
-          content: " ";
+          content: ' ';
           width: 100%;
           height: 220px;
           position: absolute;
           left: 0;
           top: 0;
-          background: rgba(255, 255, 255, .2); // filter: blur(2px);
+          background: rgba(255, 255, 255, 0.2); // filter: blur(2px);
           z-index: 2;
         }
 
-        >span {
+        > span {
           font-size: 24px;
 
           margin: 48px 0 10px 0;
           display: inline-block;
         }
-        >div {
+        > div {
           width: 512px;
           line-height: 28px;
           font-size: 14px;
         }
       }
       .app-one {
-        background: url('../assets/img/app1.png')no-repeat 680px 30px;
+        background: url('../assets/img/app1.png') no-repeat 680px 30px;
       }
       .app-two {
-        background: url('../assets/img/app2.png')no-repeat 680px 30px;
+        background: url('../assets/img/app2.png') no-repeat 680px 30px;
       }
       .app-three {
-        background: url('../assets/img/app3.png')no-repeat 680px 30px;
+        background: url('../assets/img/app3.png') no-repeat 680px 30px;
       }
       .app-code {
         ul {
@@ -170,14 +168,13 @@ a {
             border-radius: 25px;
             border: 1px solid #fff;
 
-
             text-align: center;
             display: inline-block;
             margin: 0 5px;
             font-size: 14px;
             cursor: pointer;
             position: relative;
-            >span {
+            > span {
               line-height: 50px;
               color: #fff;
             }
@@ -195,7 +192,7 @@ a {
               width: 134px;
               height: 160px;
               background: #fff;
-              >span {
+              > span {
                 line-height: 22px;
                 letter-spacing: 3px;
               }
@@ -218,11 +215,11 @@ a {
       position: absolute;
       left: -15px;
       top: 14px;
-      content: " ";
+      content: ' ';
       display: block;
       height: 15px;
       width: 15px;
-      background: #409EFF;
+      background: #409eff;
       -webkit-transform: rotate(45deg);
       transform: rotate(45deg);
     }
@@ -230,11 +227,11 @@ a {
       position: absolute;
       right: -15px;
       top: 14px;
-      content: " ";
+      content: ' ';
       display: block;
       height: 15px;
       width: 15px;
-      background: #409EFF;
+      background: #409eff;
       -webkit-transform: rotate(45deg);
       transform: rotate(45deg);
     }
@@ -244,13 +241,13 @@ a {
 .bpm-footer {
   width: 100%;
   height: 92px;
-  background: #232F36;
+  background: #232f36;
   text-align: center;
   display: inline-block;
-  >div {
+  > div {
     margin-top: 20px;
     font-size: 14px;
-    color: #E8E8E8;
+    color: #e8e8e8;
     line-height: 26px;
   }
 }
@@ -258,7 +255,6 @@ a {
 .el-footer {
   padding: 0;
 }
-
 </style>
 <template>
   <div>
@@ -276,9 +272,7 @@ a {
           </div>
         </div>
         <div class="advantage">
-          <div class="list-title">
-            我们的优势
-          </div>
+          <div class="list-title">我们的优势</div>
           <div class="advantage-content">
             <el-row>
               <el-col :span="6">
@@ -333,9 +327,7 @@ a {
           </div>
         </div>
         <div class="product">
-          <div class="list-title">
-            我们的产品
-          </div>
+          <div class="list-title">我们的产品</div>
           <div class="product-content">
             <el-carousel :interval="5000" arrow="always">
               <el-carousel-item>
@@ -362,21 +354,21 @@ a {
                 <li>
                   <span>业务端APP</span>
                   <div class="code">
-                    <img width="100%" :src="businessCodeImg" alt="">
+                    <img width="100%" :src="businessCodeImg" alt>
                     <span>扫码下载</span>
                   </div>
                 </li>
                 <li>
                   <span>司机端APP</span>
                   <div class="code">
-                    <img width="100%" :src="driverCodeImg" alt="">
+                    <img width="100%" :src="driverCodeImg" alt>
                     <span>扫码下载</span>
                   </div>
                 </li>
                 <li>
                   <span>客户端APP</span>
                   <div class="code">
-                    <img width="100%" :src="consumerCodeImg" alt="">
+                    <img width="100%" :src="consumerCodeImg" alt>
                     <span>扫码下载</span>
                   </div>
                 </li>
@@ -387,8 +379,10 @@ a {
       </el-main>
       <el-footer>
         <div class="bpm-footer">
-          <div>Copyright © {{newYear}} 成都浩海通达科技有限公司 - 蜀ICP备17041791号-1
-            <br> QQ：1373724944(联系客服) - 邮箱：fangyuan@hhtdlng.com(合作洽谈)</div>
+          <div>
+            Copyright © {{newYear}} 成都浩海通达科技有限公司 - 蜀ICP备17041791号-1
+            <br>QQ：1373724944(联系客服) - 邮箱：fangyuan@hhtdlng.com(合作洽谈)
+          </div>
         </div>
       </el-footer>
     </el-container>
@@ -403,63 +397,63 @@ export default {
   },
   data() {
     return {
-      businessCodeImg: '', //业务端下载二维码
-      driverCodeImg: '', //司机端下载二维码
-      consumerCodeImg: '', //客户端下载二维码
+      businessCodeImg: '', // 业务端下载二维码
+      driverCodeImg: '', // 司机端下载二维码
+      consumerCodeImg: '', // 客户端下载二维码
       appUrl: {
-        businessAppUrl: '', //业务端下载链接
-        driverAppUrl: '', //司机端下载链接
-        consumerAppUrl: '', //客户端下载链接
+        businessAppUrl: '', // 业务端下载链接
+        driverAppUrl: '', // 司机端下载链接
+        consumerAppUrl: '' // 客户端下载链接
       },
       user: this.pbFunc.getLocalData('users', true),
       newYear: ''
-    };
+    }
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     isLogin() {
       if (this.user && this.user.nick_name) {
-        //this.$router.push({ path: '/dashboard/dispatchDashboard' });
-        this.$emit('login');
+        this.$router.push({
+          path: '/orderManage/physicalOrder/physicalOrderList'
+        })
+        // this.$emit('login')
       } else {
-        this.$router.push({ path: '/login' });
+        this.$router.push({
+          path: '/login'
+        })
       }
     },
     getData() {
-      let myDate = new Date();
-      return myDate.getFullYear();
+      let myDate = new Date()
+      return myDate.getFullYear()
     }
   },
   created() {
-    let currentUrl = document.location.href.toString();
-    this.newYear = this.getData();
+    let currentUrl = document.location.href.toString()
+    this.newYear = this.getData()
 
-    const getUrl = (urlLink) => {
-      this.businessCodeImg = `http://www.pgyer.com/app/qrcode/newBusiness${urlLink}`;
-      this.driverCodeImg = `http://www.pgyer.com/app/qrcode/newDriver${urlLink}`;
-      this.consumerCodeImg = `https://www.pgyer.com/app/qrcode/newConsumer${urlLink}`;
+    const getUrl = urlLink => {
+      this.businessCodeImg = `http://www.pgyer.com/app/qrcode/newBusiness${urlLink}`
+      this.driverCodeImg = `http://www.pgyer.com/app/qrcode/newDriver${urlLink}`
+      this.consumerCodeImg = `https://www.pgyer.com/app/qrcode/newConsumer${urlLink}`
 
-      this.appUrl.consumerAppUrl = `https://www.pgyer.com/newConsumer${urlLink}`;
-      this.appUrl.businessAppUrl = `https://www.pgyer.com/newBusiness${urlLink}`;
-      this.appUrl.driverAppUrl = `https://www.pgyer.com/newDriver${urlLink}`;
+      this.appUrl.consumerAppUrl = `https://www.pgyer.com/newConsumer${urlLink}`
+      this.appUrl.businessAppUrl = `https://www.pgyer.com/newBusiness${urlLink}`
+      this.appUrl.driverAppUrl = `https://www.pgyer.com/newDriver${urlLink}`
     }
     if (currentUrl.match('ptms.hhtdlng.com')) {
-      getUrl('Temp');
-      this.driverCodeImg = `http://www.pgyer.com/app/qrcode/newDriverNewTemp`;
-      this.appUrl.driverAppUrl = `https://www.pgyer.com/newDriverNewTemp`;
+      getUrl('Temp')
+      this.driverCodeImg = `http://www.pgyer.com/app/qrcode/newDriverNewTemp`
+      this.appUrl.driverAppUrl = `https://www.pgyer.com/newDriverNewTemp`
     } else if (currentUrl.match('ptms.91lng.cn')) {
-      getUrl('Prepare');
+      getUrl('Prepare')
     } else if (currentUrl.match('tms.hhtdlng.com')) {
-      getUrl('Test');
+      getUrl('Test')
     } else if (currentUrl.match('tms.91lng.cn')) {
-      getUrl('Pro');
+      getUrl('Pro')
     } else {
-      getUrl('Dev');
+      getUrl('Dev')
     }
-
   }
-};
-
+}
 </script>
