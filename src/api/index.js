@@ -27,7 +27,7 @@ export const getDomainUrl = function(prefix = '') {
   } else if (currentUrl.match('ptms.91lng.cn')) {
     // 预发环境
     domainUrl = `${prefix}ptms.91lng.cn`
-  } else if (currentUrl.match(`tc.shengdujk.com`)) {
+  } else if (currentUrl.match(`tm.shengdujk.com`)) {
     // 测试环境
     domainUrl = `${prefix}api.shengdujk.com`
   } else if (

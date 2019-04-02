@@ -25,7 +25,7 @@
       <el-main v-show="!pageLoading" class="mt-30">
         <transition name="el-fade-in-linear">
           <div>
-            <div class="detail-form-title text-center">基础信息</div>
+            <div class="detail-form-title text-center">校验信息</div>
             <el-form
               class="addheaduserform detail-form"
               label-width="120px"
@@ -36,58 +36,20 @@
             >
               <el-row :gutter="40">
                 <el-col :span="8">
-                  <el-form-item label="用户信息上传:" prop="user">
-                    <div class="cursor-pointer text-blue">点击上传</div>
+                  <el-form-item label="姓名:" prop="user">
+                    <el-input placeholder="请输入" type="text" v-model.trim="editMsgForm.user"></el-input>
                   </el-form-item>
                 </el-col>
-                <!-- <el-col :span="8">
+                <el-col :span="8">
                   <el-form-item label="身份证号:" prop="enterprise_type">
                     <div>{{displayContent.idNumber}}</div>
-                  </el-form-item>
-                </el-col>-->
-              </el-row>
-              <el-row :gutter="40">
-                <el-col :span="8">
-                  <el-form-item label="健康管理订单内容:" label-width="140px" prop="service_package">
-                    <el-select
-                      v-model="editMsgForm.service_package"
-                      clearable
-                      placeholder="请输入选择"
-                      filterable
-                      @change="selectServicePack"
-                    >
-                      <el-option
-                        v-for="(item) in servicePackList"
-                        :key="item._id"
-                        :label="item.package_name"
-                        :value="item._id"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="9">
-                  <el-form-item label="健康管理订单分配对象:" label-width="180px" prop="service_package">
-                    <el-select
-                      v-model="editMsgForm.service_package"
-                      clearable
-                      placeholder="请输入选择"
-                      filterable
-                      @change="selectServicePack"
-                    >
-                      <el-option
-                        v-for="(item) in servicePackList"
-                        :key="item._id"
-                        :label="item.package_name"
-                        :value="item._id"
-                      ></el-option>
-                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
             </el-form>
             <div class="detail-btn">
               <el-row>
-                <el-col :span="12" :offset="6" class="text-center" v-if="false">
+                <el-col :span="12" :offset="6" class="text-center">
                   <!-- <el-button type="success" @click="editBasics(nextStepBtn,'next')" :loading="nextStepBtn.isLoading" :disabled="nextStepBtn.isDisabled">{{nextStepBtn.btnText}}</el-button> -->
                   <el-button
                     type="primary"
@@ -106,13 +68,10 @@
 </template>
 <script>
 export default {
-  name: 'healthOrderEdit',
+  name: 'checkEdit',
   computed: {
     titleType: function() {
-      return this.$route.query.id ? '编辑健康管理订单' : '新增健康管理订单'
-    },
-    id: function() {
-      return this.$route.query.id || ''
+      return '校验体检订单'
     },
     enterpriseId() {
       let users = this.pbFunc.getLocalData('users', true)
@@ -129,7 +88,7 @@ export default {
       editMsgForm: {
         user: '',
         service_package: '',
-        order_type: 'service-order'
+        order_type: 'business-order'
       },
       rules: {
         user: [{ required: true, message: '请选择姓名', trigger: 'change' }],
@@ -168,12 +127,11 @@ export default {
   methods: {
     returnToPage: function() {
       this.$router.push({
-        path: '/orderManage/healthOrder/healthOrderList'
+        path: '/orderManage/physicalOrder/physicalOrderList'
       })
     },
     // 选择用户
     selectUser() {
-      console.log('user', this.editMsgForm.user)
       this.usersList.forEach(item => {
         if (item.user === this.editMsgForm.user) {
           this.displayContent.idNumber = item.identity_card
@@ -224,7 +182,7 @@ export default {
                 ) {
                   this.$message.success('新增成功')
                   this.$router.push({
-                    path: `/orderManage/healthOrder/healthOrderList`
+                    path: `/orderManage/physicalOrder/physicalOrderList`
                   })
                   resolve(results.data.content)
                 } else {
@@ -244,7 +202,7 @@ export default {
       let postData = {
         need_all: true,
         enterprise: this.enterpriseId,
-        package_type: 'management'
+        package_type: 'medical'
       }
       this.$$http('servicePackList', postData)
         .then(results => {

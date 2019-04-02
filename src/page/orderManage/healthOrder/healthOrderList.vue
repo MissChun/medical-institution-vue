@@ -26,7 +26,7 @@
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="健康管理阶段:" label-width="100px">
-                <el-select v-model="searchFilters.operation" placeholder="请选择">
+                <el-select v-model="searchFilters.state" placeholder="请选择" @change="startSearch">
                   <el-option
                     v-for="(item,key) in selectData.stageSelect"
                     :key="key"
@@ -38,7 +38,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="订单状态:">
-                <el-select v-model="searchFilters.complete_status" placeholder="请选择">
+                <el-select v-model="searchFilters.status" placeholder="请选择" @change="startSearch">
                   <el-option
                     v-for="(item,key) in selectData.orderStatusSelect"
                     :key="key"
@@ -89,10 +89,9 @@
             <!-- :width="item.width?item.width:140" -->
             <template slot-scope="scope">
               <div
-                class="cursor-pointer text-blue"
+                class="cursor-pointer"
                 v-if="item.param==='service_package'"
                 :title="scope.row.service_package.package_description"
-                @click="goAddLink('package',scope.row)"
               >{{scope.row.service_package.package_name}}</div>
               <div
                 v-else-if="item.param==='order_number'"
@@ -107,22 +106,15 @@
               <div v-else>{{scope.row[item.param]}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="220" fixed="right">
+          <el-table-column label="操作" align="center" width="180" fixed="right">
             <template slot-scope="scope">
               <el-button
-                type="primary"
+                type="danger"
                 size="mini"
-                v-if="scope.row.status==='in_service'"
-                @click="changePhase(scope.row)"
-              >更改管理阶段</el-button>
-              <el-button
-                :type="item.statusNew==='canceled'?'danger': 'success'"
-                size="mini"
-                :plain="(item.statusNew==='canceled'?true:false)|| (index/2?true:false)"
-                v-for="(item,index) in statusBtn(scope.row.status,scope.row.source)"
+                plain
+                v-if="scope.row.status==='waiting'"
                 @click="switchingState(scope.row)"
-                :key="index"
-              >{{item.statusNew==='canceled'?'':'置为'}}{{item.value}}</el-button>
+              >取消订单</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -189,7 +181,7 @@ export default {
         fieldSelect: [
           { id: 'order_number', value: '健康管理订单号' },
           { id: 'profile.nick_name', value: '健康管理用户姓名' },
-          { id: 'source', value: '订单来源' }
+          { id: 'service_agencies.enterprise_name', value: '订单分配对象' }
         ]
       },
       thTableList: [
@@ -216,8 +208,9 @@ export default {
           width: ''
         },
         {
-          title: '健康管理订单来源',
-          param: 'source',
+          title: '订单分配对象',
+          param: 'service_agencies',
+          param_two: 'enterprise_name',
           width: ''
         },
         {
@@ -251,44 +244,9 @@ export default {
       let msg = ''
       let status = row.status
       let statusNew = ''
-      if (status === 'obligation') {
-        if (type === 'canceled') {
-          msg = '请确认要取消订单，取消操作不可撤回，请确保已退款给用户!'
-          statusNew = 'canceled'
-        } else {
-          msg = '请确认已收到款项，操作后订单将置为【待服务】的状态!'
-          statusNew = 'waiting'
-        }
-      } else if (status === 'waiting') {
-        if (type === 'obligation') {
-          msg = '请确认已退回款项，操作后订单将置为【待付款】的状态!'
-          statusNew = 'obligation'
-        } else {
-          msg = '操作后订单将置为【服务中】的状态!'
-          statusNew = 'in_service'
-        }
-      } else if (status === 'in_service') {
-        if (type === 'finished') {
-          msg = '请确认已结算完成，操作后订单将置为【已完成】的状态!'
-          statusNew = 'finished'
-        } else if (type === 'waiting') {
-          msg = '操作后订单将置为【待服务】的状态!'
-          statusNew = 'waiting'
-        } else {
-          msg = '操作后订单将置为【待结算】的状态!'
-          statusNew = 'settlement'
-        }
-      } else if (status === 'settlement') {
-        if (type === 'finished') {
-          msg = '请确认已结算完成，操作后订单将置为【已完成】的状态!'
-          statusNew = 'finished'
-        } else if (type === 'waiting') {
-          msg = '操作后订单将置为【服务中】的状态!'
-          statusNew = 'waiting'
-        }
-      } else if (status === 'finished') {
-        msg = '操作后订单将置为【待结算】的状态!'
-        statusNew = 'settlement'
+      if (status === 'waiting') {
+        msg = '请确认要取消订单，取消操作不可撤回!'
+        statusNew = 'canceled'
       }
       this.$msgbox({
         title: '订单状态更改',
@@ -336,106 +294,9 @@ export default {
         }
       }).then(() => {})
     },
-    // 状态按钮
-    statusBtn(status, source) {
-      let btnList = []
-      if (status === 'obligation') {
-        if (source === 'C') {
-          btnList = [
-            {
-              status: 'obligation',
-              statusNew: 'canceled',
-              value: '取消订单'
-            },
-            {
-              status: 'obligation',
-              statusNew: 'waiting',
-              value: '待服务'
-            }
-          ]
-        } else {
-          btnList = [
-            {
-              status: 'obligation',
-              statusNew: 'waiting',
-              value: '待服务'
-            }
-          ]
-        }
-      } else if (status === 'waiting') {
-        btnList = [
-          {
-            status: 'waiting',
-            statusNew: 'in_service',
-            value: '服务中'
-          },
-          {
-            status: 'waiting',
-            statusNew: 'obligation',
-            value: '待付款'
-          }
-        ]
-      } else if (status === 'in_service') {
-        if (source === 'U' || source === 'C') {
-          btnList = [
-            {
-              status: 'in_service',
-              statusNew: 'finished',
-              value: '已完成'
-            },
-            {
-              status: 'in_service',
-              statusNew: 'waiting',
-              value: '待服务'
-            }
-          ]
-        } else {
-          btnList = [
-            {
-              status: 'in_service',
-              statusNew: 'settlement',
-              value: '待结算'
-            },
-            {
-              status: 'in_service',
-              statusNew: 'waiting',
-              value: '待服务'
-            }
-          ]
-        }
-      } else if (status === 'settlement') {
-        btnList = [
-          {
-            status: 'settlement',
-            statusNew: 'finished',
-            value: '已完成'
-          },
-          {
-            status: 'settlement',
-            statusNew: 'in_service',
-            value: '服务中'
-          }
-        ]
-      } else if (status === 'finished') {
-        btnList = [
-          {
-            status: 'finished',
-            statusNew: 'settlement',
-            value: '待结算'
-          }
-        ]
-      }
-      return btnList
-    },
     goAddLink(type, row) {
       if (type === 'add') {
         window.open(`/#/orderManage/healthOrder/healthOrderEdit`, '_blank')
-      } else if (type === 'package') {
-        window.open(
-          `/#/servicePackageManage/healthServicePackage/servicePackDetail/` +
-            row.service_package._id,
-          '_blank'
-        )
       } else if (type === 'detail') {
         window.open(
           `/#/orderManage/healthOrder/healthOrderDetail/` + row._id,
@@ -468,10 +329,12 @@ export default {
               }
             })
             list.forEach(item => {
-              this.selectData.orderStatusSelect.push({
-                id: item.status_key,
-                value: item.status_name
-              })
+              if (item.status_key !== 'obligation') {
+                this.selectData.orderStatusSelect.push({
+                  id: item.status_key,
+                  value: item.status_name
+                })
+              }
             })
           }
         })
@@ -496,7 +359,7 @@ export default {
       }
       postData.search_type = this.searchPostData.field
       postData.search = this.searchPostData.keyword
-      if (this.generationTime.length) {
+      if (this.generationTime && this.generationTime.length) {
         postData.created_at_start = this.generationTime[0]
         postData.created_at_end = this.generationTime[1]
       }
