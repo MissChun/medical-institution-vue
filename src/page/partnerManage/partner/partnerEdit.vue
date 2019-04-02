@@ -191,7 +191,8 @@ export default {
           }
         ],
         address: [
-          { required: true, message: '请输入合作方地址', trigger: 'blur' }
+          { required: true, message: '请输入合作方地址', trigger: 'blur' },
+          { min: 1, max: 30, message: '请输入1-30个字符', trigger: 'blur' }
         ]
       },
       saveBasicAndReviewBtn: {
@@ -218,14 +219,11 @@ export default {
     returnToPage: function() {
       if (this.$route.query.id) {
         this.$router.push({
-          path: `/basicDataManage/supplierManage/carrierManage/carrierDetail/${
-            this.$route.query.id
-          }/`
+          path: `/partnerManage/partner/partnerDetail/${this.$route.query.id}/`
         })
       } else {
         this.$router.push({
-          path:
-            '/basicDataManage/supplierManage/carrierManage/carrierManagelist'
+          path: '/partnerManage/partner/partnerList'
         })
       }
     },

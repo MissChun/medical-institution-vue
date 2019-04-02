@@ -48,7 +48,7 @@
                       <label>服务性别:</label>
                       <div
                         class="detail-form-item"
-                        v-html="pbFunc.dealNullData(detailData.service_agencies&&detailData.service_agencies.service_sex&&detailData.service_agencies.service_sex.value)"
+                        v-html="pbFunc.dealNullData(detailData.service_package&&detailData.service_package.service_sex_str)"
                       ></div>
                     </div>
                   </el-col>
@@ -66,7 +66,7 @@
                       <label>有效时间:</label>
                       <div
                         class="detail-form-item"
-                        v-if="detailData.service_package&&detailData.effect_time_start"
+                        v-if="detailData.service_package&&detailData.service_package.effect_time_start"
                       >{{detailData.service_package&&detailData.service_package.effect_time_start}} - {{detailData.service_package&&detailData.service_package.effect_time_end}}</div>
                     </div>
                   </el-col>
@@ -99,6 +99,48 @@
                     </div>
                   </el-col>
                 </el-row>
+                <el-row
+                  :gutter="10"
+                  v-if="detailData.service_package&&detailData.service_package.projects&&detailData.service_package.projects.length"
+                >
+                  <el-col :span="24">
+                    <div class="table-list">
+                      <el-table
+                        :data="detailData.service_package.projects"
+                        stripe
+                        style="width: 100%"
+                        size="mini"
+                        border
+                        :class="{'tabal-height-500':!detailData.service_package.projects.length}"
+                      >
+                        <el-table-column
+                          v-for="(item,key) in thTableList"
+                          :key="key"
+                          :prop="item.param"
+                          :width="item.width?item.width:''"
+                          :label="item.title"
+                          :align="item.align"
+                        >
+                          <template slot-scope="scope">
+                            <div v-if="item.param === 'sub_projects'">
+                              <span
+                                v-for="(projects,index) in scope.row.sub_projects"
+                                :key="projects._id"
+                              >
+                                {{projects.project_name}}
+                                <span
+                                  v-if="index<scope.row.sub_projects.length-1"
+                                >，</span>
+                              </span>
+                            </div>
+                            <div v-else>{{scope.row[item.param]}}</div>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                      <no-data v-if="!detailData.service_package.projects.length"></no-data>
+                    </div>
+                  </el-col>
+                </el-row>
               </div>
             </el-main>
           </el-container>
@@ -115,9 +157,21 @@ export default {
       pageLoading: false,
       activeStep: 0,
       activeName: 'detail',
-      detailData: {
-        carrier: {}
-      }
+      detailData: {},
+      thTableList: [
+        {
+          title: '类别',
+          param: 'project_name',
+          width: '200',
+          align: 'center'
+        },
+        {
+          title: '小项',
+          param: 'sub_projects',
+          width: '',
+          align: ''
+        }
+      ]
     }
   },
   created() {
@@ -137,6 +191,13 @@ export default {
           this.pageLoading = false
           if (results.data && results.data.code === 0) {
             this.detailData = results.data.content
+            if (this.detailData.service_package.service_sex === '0') {
+              this.detailData.service_package.service_sex_str = '女'
+            } else if (this.detailData.service_package.service_sex === '1') {
+              this.detailData.service_package.service_sex_str = '男'
+            } else if (this.detailData.service_package.service_sex === '2') {
+              this.detailData.service_package.service_sex_str = '不限'
+            }
           }
         })
         // eslint-disable-next-line

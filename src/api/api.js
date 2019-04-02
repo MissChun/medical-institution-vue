@@ -9,6 +9,24 @@
  */
 
 const api = {
+  getRatingList: {
+    url: '/api/v1/enterprise-rate',
+    method: 'get',
+    desc: '评级列表',
+    param: {}
+  },
+  businessDataList: {
+    url: '/api/v1/business-data',
+    method: 'get',
+    desc: '订单业务数据列表',
+    param: {}
+  },
+  orderCheck: {
+    url: '/api/v1/order-status',
+    method: 'post',
+    desc: '订单状态列表',
+    param: {}
+  },
   questionnaireList: {
     url: '/api/v1/question',
     method: 'get',

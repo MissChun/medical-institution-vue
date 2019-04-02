@@ -42,20 +42,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="9">
-              <el-form-item label="订单生成时间:" label-width="110px">
-                <el-date-picker
-                  v-model="generationTime"
-                  type="datetimerange"
-                  @change="startSearch"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  value-format="yyyy-MM-dd HH:mm:ss"
-                  :default-time="['00:00:00', '23:59:59']"
-                ></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="9">
               <el-form-item label="订单同步时间:" label-width="110px">
                 <el-date-picker
                   v-model="syncTime"
@@ -72,12 +58,12 @@
           </el-row>
         </el-form>
       </div>
-      <div class="operation-btn text-right">
+      <div class="operation-btn text-right" v-if="false">
         <!-- <el-button type="primary" plain>导入</el-button> -->
         <!-- <el-button type="primary">导出</el-button> -->
-        <el-button type="success" @click="goAddLink('add')">新增</el-button>
+        <el-button type="success" @click="goAddLink('check')">校验</el-button>
       </div>
-      <div class="table-list">
+      <div class="table-list mt-25">
         <el-table
           :data="tableData"
           stripe
@@ -94,12 +80,12 @@
             :label="item.title"
             :width="item.width?item.width:140"
           >
+            <!-- :width="item.width?item.width:140" -->
             <template slot-scope="scope">
               <div
-                class="cursor-pointer text-blue"
+                class="cursor-pointer"
                 v-if="item.param==='service_package'"
                 :title="scope.row.service_package.package_description"
-                @click="goAddLink('package',scope.row)"
               >{{scope.row.service_package.package_name}}</div>
               <div
                 v-else-if="item.param==='order_number'"
@@ -107,32 +93,28 @@
                 class="cursor-pointer text-blue"
               >{{scope.row[item.param]}}</div>
               <div v-else-if="item.param_two">{{scope.row[item.param][item.param_two]}}</div>
+              <div v-else-if="item.param==='source'">
+                {{scope.row[item.param]}}
+                <span v-if="scope.row[item.param]">端</span>
+              </div>
               <div v-else>{{scope.row[item.param]}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="220" fixed="right">
+          <el-table-column label="操作" align="center" width="180" fixed="right">
             <template slot-scope="scope">
-              <el-button
-                type="primary"
-                size="mini"
-                v-if="scope.row.status==='paid'"
-                @click="fillInTime(scope.row)"
-              >填写预约时间</el-button>
-              <span v-if="scope.row.status==='obligation'">
-                <el-button
-                  type="danger"
-                  size="mini"
-                  plain
-                  @click="switchingState(scope.row,'canceled')"
-                >取消订单</el-button>
-                <el-button type="success" size="mini" @click="switchingState(scope.row)">置为已付款</el-button>
-              </span>
               <el-button
                 type="success"
                 size="mini"
-                v-if="statusWords(scope.row.status)"
+                v-if="scope.row.status==='used'"
                 @click="switchingState(scope.row)"
-              >置为{{statusWords(scope.row.status)}}</el-button>
+              >置为已付款待使用</el-button>
+              <el-button
+                type="success"
+                size="mini"
+                v-if="scope.row.status==='paid'"
+                @click="checkOrder(scope.row)"
+                plain
+              >校验</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -150,19 +132,15 @@
         ></el-pagination>
       </div>
     </div>
-    <appointment-time-dialog
-      :dialog-type="appointmentType"
-      :row="physicalRow"
-      v-on:closeDialogBtn="closeDialog"
-    ></appointment-time-dialog>
+    <check-dialog :dialog-type="checkType" :row="physicalRow" v-on:closeDialogBtn="closeDialog"></check-dialog>
   </div>
 </template>
 <script>
-import appointmentTimeDialog from '@/components/orderManage/appointmentTimeDialog'
+import checkDialog from '@/components/orderManage/checkDialog'
 export default {
   name: 'physicalOrderList',
   components: {
-    appointmentTimeDialog: appointmentTimeDialog
+    checkDialog: checkDialog
   },
   computed: {
     enterpriseId() {
@@ -178,7 +156,6 @@ export default {
         totalCount: '',
         pageSize: 10
       },
-      generationTime: [], // 订单生成时间
       syncTime: [], // 订单同步时间
       searchPostData: {}, // 搜索参数
       searchFilters: {
@@ -187,7 +164,7 @@ export default {
         field: 'order_number'
       },
       physicalRow: {}, // 预约时间的信息
-      appointmentType: {
+      checkType: {
         type: 'add',
         isShow: false
       },
@@ -197,15 +174,15 @@ export default {
         fieldSelect: [
           { id: 'order_number', value: '体检订单号' },
           { id: 'profile.nick_name', value: '体检用户姓名' },
-          { id: 'check_code', value: '验证码' },
-          { id: 'service_agencies.enterprise_name', value: '订单分配对象' }
+          { id: 'profile.identity_card', value: '体检用身份证号' },
+          { id: 'auto_source', value: '订单来源' }
         ]
       },
       thTableList: [
         {
           title: '体检订单号',
           param: 'order_number',
-          width: ''
+          width: '180'
         },
         {
           title: '体检用户姓名',
@@ -214,46 +191,36 @@ export default {
           width: ''
         },
         {
-          title: '身份证号',
+          title: '体检用户身份证号',
           param: 'profile',
           param_two: 'identity_card',
-          width: '180'
+          width: '200'
         },
         {
           title: '体检内容',
           param: 'service_package',
           param_two: 'package_name',
-          width: ''
-        },
-        {
-          title: '订单分配对象',
-          param: 'service_agencies',
-          param_two: 'enterprise_name',
-          width: ''
-        },
-        {
-          title: '订单生成时间',
-          param: 'created_at',
           width: '180'
         },
+        {
+          title: '体检订单来源',
+          param: 'auto_source',
+          width: ''
+        },
+
         {
           title: '订单同步时间',
           param: 'assigned_time',
-          width: '180'
+          width: '200'
         },
         {
           title: '预约时间',
           param: 'appointment_time',
-          width: '180'
+          width: '200'
         },
         {
           title: '订单状态',
           param: 'status_name',
-          width: ''
-        },
-        {
-          title: '验证码',
-          param: 'check_code',
           width: ''
         }
       ],
@@ -262,43 +229,24 @@ export default {
   },
   methods: {
     closeDialog: function(type, isSave) {
-      this.appointmentType.isShow = false
+      this.checkType.isShow = false
       if (isSave) {
         this.getList()
       }
     },
-    // 填写预约时间
-    fillInTime(row) {
+    // 校验订单
+    checkOrder(row) {
       this.physicalRow = row
-      if (row.appointment_time) {
-        this.appointmentType.type = 'update'
-      } else {
-        this.appointmentType.type = 'add'
-      }
-      this.appointmentType.isShow = true
+      this.checkType.isShow = true
     },
     // 切换状态
     switchingState(row, type) {
       let msg = ''
       let status = row.status
       let statusNew = ''
-      if (status === 'obligation') {
-        if (type === 'canceled') {
-          msg = '请确认要取消订单，取消操作不可撤回，请确保已退款给用户!'
-          statusNew = 'canceled'
-        } else {
-          msg = '请确认已收到款项，操作后订单将置为【已付款】的状态!'
-          statusNew = 'paid'
-        }
-      } else if (status === 'paid') {
-        msg = '请确认已退回款项，操作后订单将置为【待付款】的状态!'
-        statusNew = 'obligation'
-      } else if (status === 'used' || status === 'finished') {
-        msg = '操作后订单将置为【待结算】的状态!'
-        statusNew = 'settlement'
-      } else if (status === 'settlement') {
-        msg = '请确认已结算完成，操作后订单将置为【已完成】的状态'
-        statusNew = 'finished'
+      if (status === 'used') {
+        msg = '操作后订单将置为【待使用】的状态!'
+        statusNew = 'paid'
       }
       this.$msgbox({
         title: '订单状态更改',
@@ -339,28 +287,9 @@ export default {
         }
       }).then(() => {})
     },
-    // 状态文字
-    statusWords(status) {
-      switch (status) {
-        case 'paid':
-          return '待付款'
-        case 'used':
-          return '待结算'
-        case 'finished':
-          return '待结算'
-        case 'settlement':
-          return '已完成'
-      }
-    },
     goAddLink(type, row) {
-      if (type === 'add') {
-        window.open(`/#/orderManage/physicalOrder/physicalOrderEdit`, '_blank')
-      } else if (type === 'package') {
-        window.open(
-          `/#/servicePackageManage/healthServicePackage/servicePackDetail/` +
-            row.service_package._id,
-          '_blank'
-        )
+      if (type === 'check') {
+        window.open(`/#/orderManage/physicalOrder/checkEdit`, '_blank')
       } else if (type === 'detail') {
         window.open(
           `/#/orderManage/physicalOrder/physicalOrderDetail/` + row._id,
@@ -395,10 +324,11 @@ export default {
               }
             })
             list.forEach(item => {
-              this.selectData.orderStatusSelect.push({
-                id: item.status_key,
-                value: item.status_name
-              })
+              if (item.status_key !== 'obligation')
+                this.selectData.orderStatusSelect.push({
+                  id: item.status_key,
+                  value: item.status_name
+                })
             })
           }
         })
@@ -422,13 +352,9 @@ export default {
       }
       postData.search_type = this.searchPostData.field
       postData.search = this.searchPostData.keyword
-      if (this.syncTime.length) {
+      if (this.syncTime && this.syncTime.length) {
         postData.assigned_time_start = this.syncTime[0]
         postData.assigned_time_end = this.syncTime[1]
-      }
-      if (this.generationTime.length) {
-        postData.created_at_start = this.generationTime[0]
-        postData.created_at_end = this.generationTime[1]
       }
       postData = this.pbFunc.fifterObjIsNull(postData)
       this.$$http('physicalOrderList', postData)

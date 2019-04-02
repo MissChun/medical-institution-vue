@@ -1,72 +1,93 @@
 .el-button {
-    height: 40px;
-    padding: 0 15px;
+  height: 40px;
+  padding: 0 15px;
 
-    font-family: @tms-font-family-cn;
-    // font-size: 14px!important;
-    font-weight: 400;
-    line-height: 38px;
+  font-family: @tms-font-family-cn;
+  // font-size: 14px!important;
+  font-weight: 400;
+  line-height: 38px;
 }
 .el-button--medium {
-    height: 36px;
-    padding: 0 12px;
+  height: 36px;
+  padding: 0 12px;
 
-    line-height: 36px;
+  line-height: 36px;
 }
 .el-button--small {
-    height: 32px;
-    padding: 0 10px;
+  height: 32px;
+  padding: 0 10px;
 
-    line-height: 32px;
+  line-height: 32px;
 }
 .el-button--mini {
-    height: 28px;
-    padding: 0 10px;
+  height: 28px;
+  padding: 0 10px;
 
-    line-height: 26px;
+  line-height: 26px;
 }
 .operation-btn {
-    margin: 10px 0;
-    .el-button + .el-button {
-        margin-left: 5px;
-    }
+  margin: 10px 0;
+  .el-button + .el-button {
+    margin-left: 5px;
+  }
 }
 .el-button--primary {
-    border-color: @tms-blue;
-    background-color: @tms-blue;
+  border-color: @tms-blue;
+  background-color: @tms-blue;
 
+  &:hover {
+    border-color: @tms-light-blue-border;
+    background-color: @tms-light-blue;
+  }
+  &.is-plain {
+    border-color: @tms-transparent-border-blue;
+    background-color: @tms-transparent-blue;
+    color: @tms-blue;
     &:hover {
-        border-color: @tms-light-blue-border;
-        background-color: @tms-light-blue;
+      background-color: @tms-blue;
     }
-    &.is-plain {
-        border-color: @tms-transparent-border-blue;
-        background-color: @tms-transparent-blue;
-    }
+  }
 }
 .el-button--success {
-    border-color: @tms-green!important;
-    background-color: @tms-green!important;
-    &:hover,
-    &:active {
-        border-color: @tms-light-green!important;
-        background-color: @tms-light-green!important;
+  border-color: @tms-green!important;
+  background-color: @tms-green!important;
+  &:hover,
+  &:active {
+    border-color: @tms-light-green!important;
+    background-color: @tms-light-green!important;
+  }
+  &.is-plain {
+    color: @tms-green!important;
+    border-color: @tms-light-green-border!important;
+    background-color: @tms-transparent-green!important;
+    &:hover {
+      color: @tms-white!important;
+      background-color: @tms-green!important;
     }
-    &.is-plain {
-        color: @tms-green!important;
-        border-color: @tms-light-green-border!important;
-        background-color: @tms-transparent-green!important;
-        &:hover {
-            color: @tms-green;
-        }
-    }
-    // &.is-disabled {
-    //     border-color: @tms-light-green;
-    //     background-color: @tms-light-green;
-    //     &:hover,
-    //     &:active {
-    //         border-color: @tms-light-green;
-    //         background-color: @tms-light-green;
-    //     }
-    // }
+  }
+  // &.is-disabled {
+  //     border-color: @tms-light-green;
+  //     background-color: @tms-light-green;
+  //     &:hover,
+  //     &:active {
+  //         border-color: @tms-light-green;
+  //         background-color: @tms-light-green;
+  //     }
+  // }
+}
+.el-button--default {
+  &:hover {
+    color: @tms-blue;
+    border-color: @tms-light-blue-border;
+    background-color: @tms-transparent-blue;
+  }
+}
+
+.el-input__inner:focus,
+.el-textarea__inner:focus,
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: @tms-blue;
+}
+.el-select-dropdown__item.selected {
+  color: @tms-blue;
 }

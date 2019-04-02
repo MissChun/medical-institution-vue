@@ -52,7 +52,7 @@
                       ></div>
                     </div>
                   </el-col>
-                  <el-col :span="8">
+                  <!-- <el-col :span="8">
                     <div class="label-list">
                       <label>服务包价格:</label>
                       <div
@@ -60,9 +60,9 @@
                         v-html="pbFunc.dealNullData(detailData.service_package&&detailData.service_package.package_price)"
                       ></div>
                     </div>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="10">
+                  </el-col>-->
+                  <!-- </el-row>
+                  <el-row :gutter="10">-->
                   <el-col :span="8">
                     <div class="label-list">
                       <label>结算价格:</label>
@@ -77,7 +77,7 @@
                       <label>有效时间:</label>
                       <div
                         class="detail-form-item"
-                        v-if="detailData.service_package&&detailData.effect_time_start"
+                        v-if="detailData.service_package&&detailData.service_package.effect_time_start"
                       >{{detailData.service_package&&detailData.service_package.effect_time_start}} - {{detailData.service_package&&detailData.service_package.effect_time_end}}</div>
                     </div>
                   </el-col>
@@ -88,6 +88,48 @@
                         class="detail-form-item"
                         v-html="pbFunc.dealNullData(detailData.service_package&&detailData.service_package.package_description)"
                       ></div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row
+                  :gutter="10"
+                  v-if="detailData.service_package&&detailData.service_package.projects&&detailData.service_package.projects.length"
+                >
+                  <el-col :span="24">
+                    <div class="table-list">
+                      <el-table
+                        :data="detailData.service_package.projects"
+                        stripe
+                        style="width: 100%"
+                        size="mini"
+                        border
+                        :class="{'tabal-height-500':!detailData.service_package.projects.length}"
+                      >
+                        <el-table-column
+                          v-for="(item,key) in thTableList"
+                          :key="key"
+                          :prop="item.param"
+                          :width="item.width?item.width:''"
+                          :label="item.title"
+                          :align="item.align"
+                        >
+                          <template slot-scope="scope">
+                            <div v-if="item.param === 'sub_projects'">
+                              <span
+                                v-for="(projects,index) in scope.row.sub_projects"
+                                :key="projects._id"
+                              >
+                                {{projects.project_name}}
+                                <span
+                                  v-if="index<scope.row.sub_projects.length-1"
+                                >，</span>
+                              </span>
+                            </div>
+                            <div v-else>{{scope.row[item.param]}}</div>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                      <no-data v-if="!detailData.service_package.projects.length"></no-data>
                     </div>
                   </el-col>
                 </el-row>
@@ -107,9 +149,21 @@ export default {
       pageLoading: false,
       activeStep: 0,
       activeName: 'detail',
-      detailData: {
-        carrier: {}
-      }
+      detailData: {},
+      thTableList: [
+        {
+          title: '类别',
+          param: 'project_name',
+          width: '200',
+          align: 'center'
+        },
+        {
+          title: '小项',
+          param: 'sub_projects',
+          width: '',
+          align: ''
+        }
+      ]
     }
   },
   created() {

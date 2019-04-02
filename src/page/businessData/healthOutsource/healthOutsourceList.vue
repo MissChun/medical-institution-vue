@@ -24,32 +24,29 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="6">
-              <el-form-item label="合作方类型:" label-width="100px">
-                <el-select
-                  v-model="searchFilters.enterprise_type"
-                  placeholder="请选择"
-                  filterable
+            <el-col :span="8">
+              <el-form-item label="订单生成时间:" label-width="110px">
+                <el-date-picker
+                  v-model="screenTime"
+                  type="datetimerange"
                   @change="startSearch"
-                >
-                  <el-option
-                    v-for="(item) in selectData.partnerTypeSelect"
-                    :key="item._id"
-                    :label="item.value"
-                    :value="item._id"
-                  ></el-option>
-                </el-select>
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :default-time="['00:00:00', '23:59:59']"
+                ></el-date-picker>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </div>
-      <div class="operation-btn text-right">
+      <div class="operation-btn text-right" v-if="false">
         <!-- <el-button type="primary" plain>导入</el-button> -->
         <!-- <el-button type="primary">导出</el-button> -->
         <el-button type="success" @click="newPage('add')">新增</el-button>
       </div>
-      <div class="table-list">
+      <div class="table-list mt-25">
         <el-table
           :data="tableData"
           stripe
@@ -66,11 +63,6 @@
             :label="item.title"
             :width="item.width"
           ></el-table-column>
-          <el-table-column label="操作" align="center" width="150" fixed="right">
-            <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click="newPage('detail',scope.row)">查看</el-button>
-            </template>
-          </el-table-column>
         </el-table>
         <noData v-if="!pageLoading && tableData.length==0"></noData>
       </div>
@@ -90,7 +82,7 @@
 </template>
 <script>
 export default {
-  name: 'partnerList',
+  name: 'healthOutsourceList',
   computed: {
     enterpriseId() {
       let users = this.pbFunc.getLocalData('users', true)
@@ -112,12 +104,7 @@ export default {
         field: 'enterprise_name'
       },
       selectData: {
-        partnerTypeSelect: [{ _id: '', id: '', value: '全部' }],
-        fieldSelect: [
-          { id: 'enterprise_name', value: '合作方名称' },
-          { id: 'contact', value: '联系人' },
-          { id: 'contact_phone', value: '联系电话' }
-        ]
+        fieldSelect: [{ id: 'enterprise_name', value: '合作方名称' }]
       },
       thTableList: [
         {
@@ -126,27 +113,38 @@ export default {
           width: ''
         },
         {
-          title: '合作方类型',
-          param: 'enterprise_type.type_name',
+          title: '健康管理服务下单数',
+          param: 'total_count',
           width: ''
         },
         {
-          title: '合作方联系人',
-          param: 'contact',
+          title: '待服务订单数',
+          param: 'actual_count',
           width: ''
         },
         {
-          title: '合作方联系电话',
-          param: 'contact_phone',
+          title: '服务中订单数',
+          param: 'actual_count',
           width: ''
         },
         {
-          title: '合作方办公地址',
-          param: 'position.address',
+          title: '已完成订单数',
+          param: 'actual_count',
+          width: ''
+        },
+        {
+          title: '应付金额',
+          param: 'should_pay',
+          width: ''
+        },
+        {
+          title: '实付金额',
+          param: 'actual_pay',
           width: ''
         }
       ],
-      tableData: []
+      tableData: [],
+      screenTime: [] // 筛选项
     }
   },
   methods: {
@@ -161,49 +159,23 @@ export default {
       this.searchPostData = this.pbFunc.deepcopy(this.searchFilters)
       this.getList()
     },
-    newPage(type, row) {
-      if (type === 'add') {
-        window.open(`/#/partnerManage/partner/partnerEdit`, '_blank')
-      } else if (type === 'detail') {
-        window.open(
-          `/#/partnerManage/partner/partnerDetail/${row._id}/`,
-          '_blank'
-        )
-      }
-    },
-    // 合作方类型筛选列表
-    getPartnerTypeList() {
-      this.$$http('partnerTypeList', {}).then(results => {
-        if (results.data && results.data.code === 0) {
-          // this.selectData.partnerTypeSelect = Object.assign(
-          //   this.selectData.partnerTypeSelect,
-          //   results.data.content
-          // );
-          results.data.content.forEach((item, index) => {
-            this.selectData.partnerTypeSelect.push({
-              _id: item._id,
-              id: item.type_key,
-              value: item.type_name
-            })
-          })
-        }
-      })
-    },
+    newPage(type, row) {},
     // 列表
     getList() {
       let postData = {
         page: this.pageData.currentPage,
         page_size: this.pageData.pageSize,
-        enterpriseId: this.enterpriseId
+        enterpriseId: this.enterpriseId,
+        order_type: 'service-order'
       }
       postData.search_type = this.searchPostData.field
       postData.search = this.searchPostData.keyword
-      // postData[this.searchPostData.field] = this.searchPostData.keyword
-      if (this.searchPostData.enterprise_type) {
-        postData.enterprise_type = this.searchPostData.enterprise_type
+      if (this.screenTime && this.screenTime.length) {
+        postData.created_at_start = this.screenTime[0]
+        postData.created_at_end = this.screenTime[1]
       }
       postData = this.pbFunc.fifterObjIsNull(postData)
-      this.$$http('associatedPartnersList', postData)
+      this.$$http('businessDataList', postData)
         .then(results => {
           if (results.data && results.data.code === 0) {
             this.tableData = results.data.content.instances
@@ -220,7 +192,6 @@ export default {
     }
   },
   created() {
-    this.getPartnerTypeList()
     this.getList()
   }
 }

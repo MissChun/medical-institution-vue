@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?2rw18z');
-  src:  url('fonts/icomoon.eot?2rw18z#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?2rw18z') format('truetype'),
-    url('fonts/icomoon.woff?2rw18z') format('woff'),
-    url('fonts/icomoon.svg?2rw18z#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?xp194m');
+  src:  url('fonts/icomoon.eot?xp194m#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?xp194m') format('truetype'),
+    url('fonts/icomoon.woff?xp194m') format('woff'),
+    url('fonts/icomoon.svg?xp194m#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,79 +24,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-dataAnalysis:before {
+.icon-date:before {
   content: "\e900";
-  color: #7b90a1;
-}
-.icon-wallet:before {
-  content: "\e901";
-  color: #7c8fa0;
-}
-.icon-dashboard:before {
-  content: "\e902";
-  color: #7c8fa0;
+  color: #7c8f9f;
 }
 .icon-order:before {
-  content: "\e903";
-  color: #7c8fa0;
+  content: "\e901";
+  color: #7c8f9f;
 }
-.icon-calendar:before {
-  content: "\e904";
-  color: #b3c6d6;
-}
-.icon-customer:before {
-  content: "\e905";
-  color: #7c8fa0;
-}
-.icon-data:before {
-  content: "\e906";
-  color: #7c8fa0;
-}
-.icon-down-arrow:before {
-  content: "\e907";
-  color: #b3c6d6;
-}
-.icon-gas:before {
-  content: "\e908";
-  color: #21335d;
-}
-.icon-lng:before {
-  content: "\e909";
-  color: #21335d;
-}
-.icon-location:before {
-  content: "\e90a";
-  color: #7c8fa0;
-}
-.icon-map:before {
-  content: "\e90b";
-  color: #7c8fa0;
-}
-.icon-notice:before {
-  content: "\e90c";
-  color: #7c8fa0;
-}
-.icon-parking:before {
-  content: "\e90d";
-  color: #21335d;
-}
-.icon-road:before {
-  content: "\e90e";
-  color: #7c8fa0;
+.icon-partner:before {
+  content: "\e902";
+  color: #7c8f9f;
 }
 .icon-setting:before {
-  content: "\e90f";
-  color: #7c8fa0;
-}
-.icon-site:before {
-  content: "\e910";
-  color: #21335d;
-}
-.icon-transport:before {
-  content: "\e911";
-  color: #7c8fa0;
-}
-.icon-user:before {
-  content: "\e912";
-  color: #7c8fa0;
+  content: "\e903";
+  color: #7c8f9f;
 }

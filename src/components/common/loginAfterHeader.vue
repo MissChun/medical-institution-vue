@@ -33,7 +33,7 @@
   text-align: center;
   font-size: 1.4em;
   text-decoration: none;
-  color: #fff;
+  color: #37656f;
   line-height: 59px;
   border: 1px solid rgb(222, 222, 222);
   border-top: none;
@@ -41,9 +41,25 @@
 }
 .max-logo {
   width: 229px;
+  height: 59px;
+  .log-img {
+    width: 50px;
+    vertical-align: middle;
+    margin-left: 3px;
+  }
+  span {
+    // color: #4a9bf8;
+    font-size: 14px;
+  }
 }
 .min-logo {
   width: 63px;
+  height: 59px;
+  .log-img {
+    width: 50px;
+    vertical-align: middle;
+    margin-left: 3px;
+  }
 }
 .nav {
   -webkit-box-flex: 1;
@@ -99,13 +115,13 @@
 }
 
 .color-4a9bf8 {
-  color: #4a9bf8;
+  color: #00b195;
 }
 
 /deep/ .el-breadcrumb__item {
   &:last-child {
     .el-breadcrumb__inner {
-      color: #4a9bf8;
+      color: #00b195;
     }
   }
 }
@@ -191,12 +207,21 @@
   <el-header>
     <el-row type="flex" class="g-head">
       <router-link :to="{path: '/'}">
-        <div href title="运输管理系统" class="logo" :class="isCollapse?'min-logo':'max-logo'">
+        <div href title="医疗机构业务系统" class="logo" :class="isCollapse?'min-logo':'max-logo'">
+          <div v-if="isCollapse">
+            <img class="log-img" src="../../assets/img/logo.ico">
+          </div>
+          <div v-else>
+            <img class="log-img" src="../../assets/img/logo.ico">
+            <span>· 医疗机构业务系统</span>
+          </div>
+        </div>
+        <!-- <div href title="运输管理系统" class="logo" :class="isCollapse?'min-logo':'max-logo'">
           <div v-if="isCollapse">
             <img class="log-img" src="../../assets/img/91LNG_min.svg">
           </div>
           <img class="log-img" v-else src="../../assets/img/logo.svg">
-        </div>
+        </div>-->
       </router-link>
       <div class="nav">
         <el-row>
