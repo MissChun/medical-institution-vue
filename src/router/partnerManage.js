@@ -76,7 +76,7 @@ export default {
             ], resolve)
         },
         {
-          path: 'partnerRatingEdit',
+          path: 'partnerRatingEdit/:id',
           name: 'partnerRatingEdit',
           meta: {
             title: '编辑合作方评级',
@@ -85,18 +85,6 @@ export default {
           component: resolve =>
             require([
               '../page/partnerManage/partnerRating/partnerRatingEdit'
-            ], resolve)
-        },
-        {
-          path: 'partnerRatingDetail/:id',
-          name: 'partnerRatingDetail',
-          meta: {
-            title: '合作方评级详情',
-            isVerificationL: false
-          },
-          component: resolve =>
-            require([
-              '../page/partnerManage/partnerRating/partnerRatingDetail'
             ], resolve)
         }
       ]

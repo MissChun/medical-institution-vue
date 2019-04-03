@@ -15,6 +15,30 @@ const api = {
     desc: '评级列表',
     param: {}
   },
+  getRatingDetail: {
+    url: '/api/v1/enterprise-rate/:id',
+    method: 'get',
+    desc: '获取机构评级详情',
+    param: {}
+  },
+  getTagList: {
+    url: '/api/v1/enterprise-rate-global-info/:id',
+    method: 'get',
+    desc: '获取对应的rate信息和tag信息',
+    param: {}
+  },
+  creatRate: {
+    url: '/api/v1/enterprise-rate',
+    method: 'post',
+    desc: '创建机构评级',
+    param: {}
+  },
+  fixRate: {
+    url: '/api/v1/enterprise-rate/:enterprise',
+    method: 'patch',
+    desc: '更新机构评级',
+    param: {}
+  },
   businessDataList: {
     url: '/api/v1/business-data',
     method: 'get',
