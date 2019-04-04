@@ -65,39 +65,10 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'info'
+      }).then(() => {
+        localStorage.clear()
+        this.$router.push({ path: '/login' })
       })
-        .then(() => {
-          this.wsMsg.close()
-          this.$$http('signOut', {})
-            .then(results => {
-              if (results.data && results.data.code === 0) {
-                this.$message({
-                  message: '退出成功',
-                  type: 'success'
-                })
-
-                // growingio 发送用户name
-                let currentUrl = document.location.href.toString()
-                if (
-                  currentUrl.match(`tms.91lng.cn`) &&
-                  !currentUrl.match(`ptms.91lng.cn`) &&
-                  !currentUrl.match(`testtms.91lng.cn`)
-                ) {
-                  // 正式环境
-                  // eslint-disable-next-line
-                  gio('clearUserId')
-                }
-              }
-            })
-            // eslint-disable-next-line
-            .catch(err => {
-              // this.$message.error('退出失败');
-            })
-
-          localStorage.clear()
-          this.$router.push({ path: '/login' })
-        })
-        .catch(() => {})
     }
   }
 }
