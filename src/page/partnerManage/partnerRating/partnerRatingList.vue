@@ -9,6 +9,7 @@
                 placeholder="请输入"
                 v-model="searchFilters.keyword"
                 class="search-filters-screen"
+                @keyup.native.13="startSearch"
               >
                 <el-select v-model="searchFilters.field" slot="prepend" placeholder="请选择">
                   <el-option
@@ -18,14 +19,18 @@
                     :value="item.id"
                   ></el-option>
                 </el-select>
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="startSearch"></el-button>
               </el-input>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="机构类型:">
-                <el-select v-model="searchFilters.enterprise_type" placeholder="请选择">
+                <el-select
+                  v-model="searchFilters.enterprise_type"
+                  placeholder="请选择"
+                  @change="startSearch()"
+                >
                   <el-option
                     v-for="(item,key) in selectData.enterpriseType"
                     :key="key"
@@ -38,11 +43,11 @@
           </el-row>
         </el-form>
       </div>
-      <div class="operation-btn text-right">
-        <!-- <el-button type="primary" plain>导入</el-button> -->
-        <!-- <el-button type="primary">导出</el-button> -->
+      <!-- <div class="operation-btn text-right">
+        <el-button type="primary" plain>导入</el-button> 
+         <el-button type="primary">导出</el-button>
         <el-button type="success" @click="goAddLink">新增</el-button>
-      </div>
+      </div>-->
       <div class="table-list">
         <el-table
           :data="tableData"
@@ -60,14 +65,18 @@
             :label="item.title"
             :width="item.width"
           ></el-table-column>
-          <el-table-column label="标签" align="center" width="140">
+          <el-table-column label="标签" align="center" width="240">
             <template slot-scope="scope">
-              <div>专业、服务好</div>
+              <el-tag
+                size="mini"
+                class="tags"
+                v-for="tag in scope.row.enterprise_rate.tag_list"
+              >{{tag.name}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="150" fixed="right">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click="handleMenuClick(scope.row)">查看</el-button>
+              <el-button type="primary" size="mini" @click="handleMenuClick(scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -81,7 +90,7 @@
           :page-size="pageData.pageSize"
           :current-page.sync="pageData.currentPage"
           @current-change="pageChange"
-          v-if="!pageLoading && pageData.totalCount>10"
+          v-if="!pageLoading && (pageData.totalCount/pageData.pageSize)>1"
         ></el-pagination>
       </div>
     </div>
@@ -89,7 +98,7 @@
 </template>
 <script>
 export default {
-  name: 'threePartyCapacityList',
+  name: 'partnerRatingList',
   computed: {},
   data() {
     return {
@@ -108,8 +117,7 @@ export default {
       selectData: {
         enterpriseType: [
           { id: '', value: '全部' },
-          { id: 'government', value: '政府机构' },
-          { id: 'hospital', value: '医院' },
+          { id: 'hospital', value: '医疗机构' },
           { id: 'health-management-company', value: '健康管理公司' },
           { id: 'third-company', value: '三方健康管理公司' }
         ],
@@ -120,28 +128,23 @@ export default {
       },
       thTableList: [
         {
-          title: '评级机构名称',
-          param: 'enterprise.enterprise_name',
-          width: ''
-        },
-        {
           title: '机构名称',
-          param: 'enterprise.enterprise_name',
+          param: 'enterprise_name',
           width: ''
         },
         {
           title: '机构代码',
-          param: 'enterprise.credit_code',
+          param: 'credit_code',
           width: ''
         },
         {
           title: '机构类型',
-          param: 'enterprise.enterprise_type.type_name',
+          param: 'enterprise_type.type_name',
           width: ''
         },
         {
           title: '评级分数',
-          param: 'score',
+          param: 'enterprise_rate.average_score',
           width: ''
         }
       ],
@@ -157,12 +160,11 @@ export default {
       this.$$http('getRatingList', postData)
         .then(results => {
           this.pageLoading = false
-          if (results.data && results.data.code === 0) {
+          if (results.data && results.data.code == 0) {
             this.tableData = results.data.content.instances
             this.pageData.totalCount = results.data.content.count
           }
         })
-        // eslint-disable-next-line
         .catch(err => {
           this.pageLoading = false
         })
@@ -186,13 +188,21 @@ export default {
     },
     handleMenuClick(row) {
       console.log('row', row)
-      this.$router.push({ path: '/nstitutionalRating/rating/ratingEdit' })
+      this.$router.push({
+        path: `/partnerManage/partnerRating/partnerRatingEdit/${row._id}`
+      })
     }
   },
   created() {
-    this.getRatingList()
+    this.startSearch()
   }
 }
 </script>
-<style>
+<style scoped lang="less">
+.table-list {
+  margin-top: 40px;
+}
+.tags {
+  margin: 4px;
+}
 </style>
