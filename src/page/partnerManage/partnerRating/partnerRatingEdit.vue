@@ -155,12 +155,13 @@ export default {
         this.$$http('getRatingDetail', postData)
           .then(results => {
             this.pageLoading = false
-            if (results.data && results.data.code == 0) {
+            if (results.data && results.data.code === 0) {
               this.detailData = results.data.content
               console.log('this.detailData', this.detailData)
             }
             resolve(results)
           })
+          // eslint-disable-next-line
           .catch(err => {
             this.pageLoading = false
             reject(err)
@@ -175,7 +176,7 @@ export default {
         this.$$http('getTagList', postData)
           .then(results => {
             this.pageLoading = false
-            if (results.data && results.data.code == 0) {
+            if (results.data && results.data.code === 0) {
               this.tagList = results.data.content.tag
               this.rateList = results.data.content.rate
             }
@@ -247,12 +248,13 @@ export default {
             btnText: '保存并退出',
             isDisabled: false
           }
-          if (results.data && results.data.code == 0) {
+          if (results.data && results.data.code === 0) {
             this.$router.push({
               path: '/partnerManage/partnerRating/partnerRatingList'
             })
           }
         })
+        // eslint-disable-next-line
         .catch(err => {
           this.saveBasicAndReviewBtn = {
             isLoading: false,

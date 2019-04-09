@@ -324,11 +324,12 @@ export default {
               }
             })
             list.forEach(item => {
-              if (item.status_key !== 'obligation')
+              if (item.status_key !== 'obligation') {
                 this.selectData.orderStatusSelect.push({
                   id: item.status_key,
                   value: item.status_name
                 })
+              }
             })
           }
         })

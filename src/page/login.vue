@@ -207,12 +207,14 @@ export default {
     loginAjax() {
       return new Promise((resolve, reject) => {
         // this.ruleForm.verify_key = this.verifyCodeData.verify_key;
+        let postData = this.ruleForm
         this.submitBtn.isDisabled = true
         this.$refs['ruleForm'].validate(valid => {
           if (valid) {
             this.submitBtn.btnText = '登录中'
             this.submitBtn.isBtnLoading = true
-            this.$$http('login', this.ruleForm)
+            postData.client = 'M'
+            this.$$http('login', postData)
               .then(results => {
                 this.submitBtn.btnText = '登录'
                 this.submitBtn.isDisabled = false
