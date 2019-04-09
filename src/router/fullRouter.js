@@ -1,6 +1,7 @@
 import orderManage from './orderManage' // 订单管理
 import partnerManage from './partnerManage' // 合作方管理
 import businessData from './businessData' // 业务数据
+import userHealthManage from './userHealthManage' // 用户健康管理
 
 export default [
   {
@@ -11,6 +12,6 @@ export default [
     meta: {
       title: '首页'
     },
-    children: [orderManage, businessData, partnerManage]
+    children: [orderManage, userHealthManage, businessData, partnerManage]
   }
 ]

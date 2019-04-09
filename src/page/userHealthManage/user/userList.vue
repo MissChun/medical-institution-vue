@@ -25,7 +25,23 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="6">
-              <el-form-item label="机构类型:">
+              <el-form-item label="性别:">
+                <el-select
+                  v-model="searchFilters.enterprise_type"
+                  placeholder="请选择"
+                  @change="startSearch()"
+                >
+                  <el-option
+                    v-for="(item,key) in selectData.genderSelect"
+                    :key="key"
+                    :label="item.value"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="指派对象:">
                 <el-select
                   v-model="searchFilters.enterprise_type"
                   placeholder="请选择"
@@ -64,19 +80,9 @@
             :label="item.title"
             :width="item.width"
           ></el-table-column>
-          <el-table-column label="标签" align="center" width="240">
-            <template slot-scope="scope">
-              <el-tag
-                size="mini"
-                class="tags"
-                v-for="(tag,index) in scope.row.enterprise_rate.tag_list"
-                :key="index"
-              >{{tag.name}}</el-tag>
-            </template>
-          </el-table-column>
           <el-table-column label="操作" align="center" width="150" fixed="right">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click="handleMenuClick(scope.row)">编辑</el-button>
+              <el-button type="primary" size="mini" @click="handleMenuClick(scope.row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -121,30 +127,54 @@ export default {
           { id: 'health-management-company', value: '健康管理公司' },
           { id: 'third-company', value: '三方健康管理公司' }
         ],
+        genderSelect: [
+          { id: '', value: '全部' },
+          { id: '0', value: '女' },
+          { id: '1', value: '男' },
+          { id: '2', value: '未知' }
+        ],
         fieldSelect: [
-          { id: 'enterprise_name', value: '机构名称' },
-          { id: 'credit_code', value: '机构代码' }
+          { id: 'enterprise_name', value: '用户姓名' },
+          { id: 'credit_code', value: '身份证号' },
+          { id: 'enterprise_name', value: '联系电话' },
+          { id: 'credit_code', value: '订单编号' },
+          { id: 'credit_code', value: '异常小项名称' }
         ]
       },
       thTableList: [
         {
-          title: '机构名称',
-          param: 'enterprise_name',
+          title: '姓名',
+          param: 'nick_name',
           width: ''
         },
         {
-          title: '机构代码',
-          param: 'credit_code',
+          title: '性别',
+          param: 'genderStr',
           width: ''
         },
         {
-          title: '机构类型',
-          param: 'enterprise_type.type_name',
+          title: '年龄',
+          param: 'age',
           width: ''
         },
         {
-          title: '评级分数',
-          param: 'enterprise_rate.average_score',
+          title: '身份证号',
+          param: 'identity_card',
+          width: ''
+        },
+        {
+          title: '电话',
+          param: 'mobile_number',
+          width: ''
+        },
+        {
+          title: '健康服务订单编号',
+          param: 'identity_card',
+          width: ''
+        },
+        {
+          title: '指派对象',
+          param: 'mobile_number',
           width: ''
         }
       ],
