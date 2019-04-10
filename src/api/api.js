@@ -268,6 +268,18 @@ const api = {
       username: '用户名',
       password: '密码'
     }
+  },
+  getRecordsList: {
+    url: '/api/v1/medical-records',
+    method: 'get',
+    desc: '体检报告列表',
+    param: {}
+  },
+  getRecordsDetail: {
+    url: '/api/v1/medical-records/:id',
+    method: 'get',
+    desc: '体检报告列表',
+    param: {}
   }
 }
 
