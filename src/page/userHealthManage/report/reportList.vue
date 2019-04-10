@@ -26,11 +26,7 @@
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="性别:">
-                <el-select
-                  v-model="searchFilters.enterprise_type"
-                  placeholder="请选择"
-                  @change="startSearch()"
-                >
+                <el-select v-model="searchFilters.gender" placeholder="请选择" @change="startSearch()">
                   <el-option
                     v-for="(item,key) in selectData.genderSelect"
                     :key="key"
@@ -43,15 +39,15 @@
             <el-col :span="6">
               <el-form-item label="指派对象:">
                 <el-select
-                  v-model="searchFilters.enterprise_type"
+                  v-model="searchFilters.service_agencies"
                   placeholder="请选择"
                   @change="startSearch()"
                 >
                   <el-option
-                    v-for="(item,key) in selectData.enterpriseType"
+                    v-for="(item,key) in selectData.serviceAgencies"
                     :key="key"
-                    :label="item.value"
-                    :value="item.id"
+                    :label="item.enterprise_name"
+                    :value="item.enterprise_name"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -116,17 +112,13 @@ export default {
       },
       searchPostData: {}, // 搜索参数
       searchFilters: {
-        enterprise_type: '',
+        service_agencies: '全部',
         keyword: '',
-        field: 'enterprise_name'
+        gender: '',
+        field: 'nick_name'
       },
       selectData: {
-        enterpriseType: [
-          { id: '', value: '全部' },
-          { id: 'hospital', value: '医疗机构' },
-          { id: 'health-management-company', value: '健康管理公司' },
-          { id: 'third-company', value: '三方健康管理公司' }
-        ],
+        serviceAgencies: [],
         genderSelect: [
           { id: '', value: '全部' },
           { id: '0', value: '女' },
@@ -134,11 +126,10 @@ export default {
           { id: '2', value: '未知' }
         ],
         fieldSelect: [
-          { id: 'enterprise_name', value: '用户姓名' },
-          { id: 'credit_code', value: '身份证号' },
-          { id: 'enterprise_name', value: '联系电话' },
-          { id: 'credit_code', value: '订单编号' },
-          { id: 'credit_code', value: '异常小项名称' }
+          { id: 'nick_name', value: '用户姓名' },
+          { id: 'card_no', value: '身份证号' },
+          { id: 'mobile_number', value: '联系电话' },
+          { id: 'order_number', value: '订单编号' }
         ]
       },
       thTableList: [
@@ -159,7 +150,7 @@ export default {
         },
         {
           title: '身份证号',
-          param: 'identity_card',
+          param: 'card_no',
           width: ''
         },
         {
@@ -169,12 +160,12 @@ export default {
         },
         {
           title: '健康服务订单编号',
-          param: 'identity_card',
+          param: 'order_number',
           width: ''
         },
         {
           title: '指派对象',
-          param: 'mobile_number',
+          param: 'service_agencies',
           width: ''
         }
       ],
@@ -185,13 +176,37 @@ export default {
     goAddLink() {
       window.open(`/#/nstitutionalRating/rating/ratingEdit`, '_blank')
     },
-    getRatingList(postData) {
+    getPartnersList() {
+      const users = this.pbFunc.getLocalData('users', true)
+      const enterpriseId = users.enterprise._id
+      this.$$http('associatedPartnersList', {
+        need_all: true,
+        enterpriseId: enterpriseId
+      }).then(results => {
+        if (results.data && results.data.code === 0) {
+          this.selectData.serviceAgencies = results.data.content.instances
+          this.selectData.serviceAgencies.unshift({
+            enterprise_name: '全部'
+          })
+        }
+      })
+    },
+    getRocordsList(postData) {
       this.pageLoading = true
-      this.$$http('getRatingList', postData)
+      this.$$http('getRecordsList', postData)
         .then(results => {
           this.pageLoading = false
           if (results.data && results.data.code === 0) {
             this.tableData = results.data.content.instances
+            this.tableData.forEach(item => {
+              if (item.gender === '0') {
+                item.genderStr = '女'
+              } else if (item.gender === '1') {
+                item.genderStr = '男'
+              } else if (item.gender === '2') {
+                item.genderStr = '未知'
+              }
+            })
             this.pageData.totalCount = results.data.content.count
           }
         })
@@ -205,26 +220,29 @@ export default {
       let postData = {
         page: this.pageData.currentPage,
         page_size: this.pageData.pageSize,
-        enterprise_type: this.searchFilters.enterprise_type,
+        service_agencies:
+          this.searchFilters.service_agencies !== '全部'
+            ? this.searchFilters.service_agencies
+            : '',
+        gender: this.searchFilters.gender,
         search_type: this.searchFilters.field,
         search: this.searchFilters.keyword
       }
       this.postDataCopy = Object.assign({}, postData)
-      this.getRatingList(postData)
+      this.getRocordsList(postData)
     },
     pageChange(page) {
-      console.log('page', page)
       this.postDataCopy.page = page
-      this.getRatingList(this.postDataCopy)
+      this.getRocordsList(this.postDataCopy)
     },
     handleMenuClick(row) {
-      console.log('row', row)
       this.$router.push({
-        path: `/partnerManage/partnerRating/partnerRatingEdit/${row._id}`
+        path: `/userHealthManage/report/reportDetail/${row._id}`
       })
     }
   },
   created() {
+    this.getPartnersList()
     this.startSearch()
   }
 }
